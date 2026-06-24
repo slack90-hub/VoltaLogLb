@@ -3,272 +3,783 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VoltaLog</title>
-  <meta name="description" content="VoltaLog customer release page for the Windows electricity billing application.">
+  <title>VoltaLog | Electricity Billing Software</title>
+  <meta name="description" content="VoltaLog is a Windows electricity billing system for private generator and subscription-based power offices.">
   <style>
     :root {
       color-scheme: light;
-      --ink: #17202a;
-      --muted: #5f6f7c;
-      --line: #d9e2ea;
-      --accent: #0b7a75;
-      --accent-dark: #075c58;
-      --bg: #f6f8fb;
+      --ink: #132326;
+      --muted: #52656a;
+      --soft: #eef4f3;
       --panel: #ffffff;
-      --warm: #f2c14e;
+      --line: #d7e1df;
+      --teal: #08736d;
+      --teal-dark: #064f4b;
+      --gold: #e2aa2f;
+      --red: #b94b45;
+      --green: #2f7d4f;
+      --navy: #172f45;
+      --paper: #faf7ef;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: "Segoe UI", Arial, sans-serif;
       color: var(--ink);
-      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      background: #fbfcfc;
     }
 
-    .page {
-      width: min(1040px, calc(100% - 32px));
+    a { color: inherit; }
+
+    .topbar {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      background: rgba(19, 35, 38, 0.86);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(1160px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 32px 0 48px;
-    }
-
-    header {
+      min-height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
-      padding: 12px 0 28px;
-      border-bottom: 1px solid var(--line);
+      gap: 20px;
+      color: #fff;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 700;
-      font-size: 22px;
-    }
-
-    .mark {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: var(--accent);
-      color: #fff;
       font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    nav {
-      display: flex;
-      gap: 18px;
-      font-size: 14px;
-    }
-
-    nav a {
-      color: var(--muted);
+      font-size: 21px;
       text-decoration: none;
     }
 
-    main {
-      padding-top: 48px;
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--gold);
+      color: #1b2527;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-cta {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--teal-dark);
+      font-weight: 800;
     }
 
     .hero {
+      position: relative;
+      min-height: 88vh;
+      overflow: hidden;
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-      gap: 32px;
+      align-items: end;
+      padding: 116px 0 56px;
+      background:
+        linear-gradient(90deg, rgba(7, 27, 31, 0.94) 0%, rgba(7, 27, 31, 0.78) 45%, rgba(7, 27, 31, 0.34) 100%),
+        radial-gradient(circle at 76% 34%, rgba(226, 170, 47, 0.24), transparent 28%),
+        linear-gradient(135deg, #0a2c31, #173c42 45%, #f1efe7 45%, #f1efe7 100%);
+    }
+
+    .hero-scene {
+      position: absolute;
+      inset: 94px max(24px, calc((100vw - 1160px) / 2)) auto auto;
+      width: min(680px, 52vw);
+      min-height: 480px;
+      opacity: 0.98;
+    }
+
+    .monitor {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 600px;
+      max-width: 100%;
+      padding: 18px;
+      border-radius: 18px;
+      background: #10262b;
+      box-shadow: 0 32px 70px rgba(0,0,0,0.35);
+      transform: rotate(-2deg);
+    }
+
+    .screen {
+      min-height: 344px;
+      border-radius: 10px;
+      background: #f7faf9;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .screen-head {
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-weight: 800;
+      color: #163034;
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      border: 1px solid #dbe6e4;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .metric span {
+      display: block;
+      color: #66777b;
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .metric strong {
+      font-size: 23px;
+      color: var(--teal-dark);
+    }
+
+    .table {
+      border: 1px solid #dbe6e4;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.25fr .8fr .8fr .8fr;
+      gap: 10px;
+      padding: 11px 12px;
+      border-bottom: 1px solid #edf2f1;
+      color: #283b40;
+      font-size: 12px;
+    }
+
+    .row:first-child {
+      background: #eef5f4;
+      color: #5a6b70;
+      font-weight: 800;
+    }
+
+    .row:last-child { border-bottom: 0; }
+
+    .phone {
+      position: absolute;
+      left: 8px;
+      bottom: 10px;
+      width: 190px;
+      border-radius: 28px;
+      padding: 13px;
+      background: #12272c;
+      box-shadow: 0 28px 46px rgba(0,0,0,0.34);
+      transform: rotate(5deg);
+    }
+
+    .phone-screen {
+      min-height: 300px;
+      border-radius: 20px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .receipt {
+      display: grid;
+      gap: 10px;
+      color: #21363a;
+    }
+
+    .receipt b { font-size: 20px; }
+
+    .pill {
+      width: fit-content;
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .bars {
+      display: flex;
+      align-items: end;
+      gap: 7px;
+      height: 86px;
+      margin-top: 10px;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: var(--teal);
+    }
+
+    .wrap {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+      color: #fff;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: #f4d27a;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(42px, 7vw, 78px);
-      line-height: 0.95;
+      font-size: clamp(52px, 8vw, 104px);
+      line-height: 0.92;
       letter-spacing: 0;
     }
 
-    .lead {
-      max-width: 620px;
-      margin: 22px 0 0;
-      color: var(--muted);
-      font-size: 19px;
-      line-height: 1.65;
+    .hero-copy p {
+      max-width: 590px;
+      margin: 24px 0 0;
+      font-size: clamp(18px, 2.2vw, 24px);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.88);
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 30px;
+      margin-top: 32px;
     }
 
     .button {
+      min-height: 48px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
+      padding: 0 20px;
       border-radius: 6px;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #fff;
-      font-weight: 700;
+      border: 1px solid transparent;
       text-decoration: none;
+      font-weight: 900;
     }
 
-    .button.secondary {
-      background: transparent;
-      color: var(--accent-dark);
-    }
+    .button.primary { background: var(--gold); color: #172326; }
+    .button.secondary { border-color: rgba(255,255,255,0.46); color: #fff; }
+    .button.dark { background: var(--teal); color: #fff; }
+    .button.outline { border-color: var(--teal); color: var(--teal-dark); }
 
-    .release-panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 24px;
-      box-shadow: 0 14px 36px rgba(23, 32, 42, 0.08);
-    }
-
-    .release-panel h2 {
-      margin: 0 0 16px;
-      font-size: 22px;
-    }
-
-    .status {
+    .trust-strip {
       display: grid;
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
-    .status li {
-      display: grid;
-      grid-template-columns: 16px 1fr;
-      gap: 10px;
-      align-items: start;
+    .trust-item {
+      padding: 28px 22px;
+      background: #fff;
+    }
+
+    .trust-item strong {
+      display: block;
+      font-size: 28px;
+      color: var(--teal-dark);
+      margin-bottom: 6px;
+    }
+
+    .trust-item span {
       color: var(--muted);
       line-height: 1.45;
     }
 
-    .dot {
-      width: 10px;
-      height: 10px;
-      margin-top: 6px;
-      border-radius: 50%;
-      background: var(--warm);
+    section {
+      padding: 76px 0;
     }
 
-    .features {
+    .section-head {
+      max-width: 770px;
+      margin-bottom: 32px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.6;
+    }
+
+    .problem {
+      background: var(--paper);
+    }
+
+    .problem-grid,
+    .feature-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 48px;
+      gap: 18px;
     }
 
-    .feature {
-      padding: 20px;
-      border-top: 3px solid var(--accent);
+    .tile {
+      min-height: 210px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
       background: #fff;
     }
 
-    .feature h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
+    .tile h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
     }
 
-    .feature p {
-      margin: 0;
+    .tile p,
+    .tile li {
       color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .tile ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .feature-grid .tile {
+      border-top: 4px solid var(--teal);
+    }
+
+    .workflow {
+      background: #10272c;
+      color: #fff;
+    }
+
+    .workflow .section-head p { color: rgba(255,255,255,0.72); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      min-height: 190px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .step b {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 16px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #172326;
+    }
+
+    .step h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .step p {
+      margin: 0;
+      color: rgba(255,255,255,0.74);
       line-height: 1.55;
     }
 
-    footer {
-      margin-top: 54px;
-      padding-top: 20px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 13px;
+    .proof {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 30px;
+      align-items: center;
     }
 
-    @media (max-width: 760px) {
-      header,
-      .hero {
-        grid-template-columns: 1fr;
-      }
+    .quote {
+      padding: 34px;
+      border-radius: 8px;
+      background: var(--soft);
+      border-left: 5px solid var(--gold);
+    }
 
-      header {
-        align-items: flex-start;
-      }
+    .quote p {
+      margin: 0;
+      color: #25383c;
+      font-size: 24px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
 
-      nav {
-        flex-wrap: wrap;
-      }
+    .proof-list {
+      display: grid;
+      gap: 14px;
+    }
 
-      .features {
-        grid-template-columns: 1fr;
-      }
+    .proof-row {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .proof-row strong { display: block; margin-bottom: 4px; }
+    .proof-row span { color: var(--muted); line-height: 1.55; }
+
+    .cta {
+      padding: 72px 0;
+      background: linear-gradient(135deg, var(--teal-dark), #173c42);
+      color: #fff;
+    }
+
+    .cta-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .cta h2 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .cta p {
+      margin: 16px 0 0;
+      max-width: 700px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.6;
+      font-size: 18px;
+    }
+
+    .faq {
+      background: #fff;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .faq-item {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfc;
+    }
+
+    .faq-item h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+    }
+
+    .faq-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .hero { min-height: auto; padding-top: 106px; }
+      .hero-scene { position: relative; inset: auto; width: 100%; min-height: 420px; margin: 34px auto 0; }
+      .hero-copy { max-width: 760px; }
+      .trust-strip,
+      .problem-grid,
+      .feature-grid,
+      .steps,
+      .proof,
+      .cta-box,
+      .faq-grid { grid-template-columns: 1fr 1fr; }
+      .monitor { width: 100%; }
+      .phone { left: 24px; }
+    }
+
+    @media (max-width: 680px) {
+      .nav { align-items: flex-start; padding: 12px 0; }
+      .nav-links { display: none; }
+      .hero { padding-bottom: 36px; }
+      h1 { font-size: clamp(48px, 18vw, 72px); }
+      .hero-scene { min-height: 360px; }
+      .monitor { top: 24px; padding: 12px; }
+      .screen { min-height: 284px; padding: 12px; }
+      .screen-grid { grid-template-columns: 1fr; }
+      .phone { display: none; }
+      .trust-strip,
+      .problem-grid,
+      .feature-grid,
+      .steps,
+      .proof,
+      .cta-box,
+      .faq-grid { grid-template-columns: 1fr; }
+      section { padding: 54px 0; }
+      .footer-inner { flex-direction: column; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="brand"><span class="mark">V</span> VoltaLog</div>
-      <nav aria-label="Main navigation">
-        <a href="#release">Release</a>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#top"><span class="brand-mark">V</span>VoltaLog</a>
+      <div class="nav-links">
         <a href="#features">Features</a>
-        <a href="https://github.com/slack90-hub/VoltaLogLb/releases">Downloads</a>
-      </nav>
-    </header>
+        <a href="#workflow">Workflow</a>
+        <a href="#value">Value</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-cta" href="https://github.com/slack90-hub/VoltaLogLb/releases">Download</a>
+      </div>
+    </nav>
+  </header>
 
-    <main>
-      <section class="hero" id="release">
-        <div>
-          <h1>VoltaLog customer releases</h1>
-          <p class="lead">A public download page for the VoltaLog Windows electricity billing application. Release ZIP files are published here while the source code stays private.</p>
-          <div class="actions">
-            <a class="button" href="https://github.com/slack90-hub/VoltaLogLb/releases">View downloads</a>
-            <a class="button secondary" href="https://github.com/slack90-hub/VoltaLogLb">Open repository</a>
+  <main id="top">
+    <section class="hero" aria-label="VoltaLog marketing hero">
+      <div class="hero-scene" aria-hidden="true">
+        <div class="monitor">
+          <div class="screen">
+            <div class="screen-head"><span>Billing Dashboard</span><span>June Cycle</span></div>
+            <div class="screen-grid">
+              <div class="metric"><span>Invoices</span><strong>$38.4k</strong></div>
+              <div class="metric"><span>Collected</span><strong>$31.8k</strong></div>
+              <div class="metric"><span>Active</span><strong>1,248</strong></div>
+            </div>
+            <div class="table">
+              <div class="row"><b>Customer</b><b>Prev</b><b>Current</b><b>Total</b></div>
+              <div class="row"><span>Nader Market</span><span>18,420</span><span>18,980</span><b>$84.00</b></div>
+              <div class="row"><span>Maya Pharmacy</span><span>12,880</span><span>13,210</span><b>$49.50</b></div>
+              <div class="row"><span>Tony Workshop</span><span>21,600</span><span>22,050</span><b>$67.50</b></div>
+              <div class="row"><span>Rita Residence</span><span>3,240</span><span>3,410</span><b>$25.50</b></div>
+            </div>
           </div>
         </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="receipt">
+              <span class="pill">Paid</span>
+              <b>Receipt #1048</b>
+              <span>Customer payment recorded</span>
+              <span>Balance updated instantly</span>
+              <div class="bars">
+                <i class="bar" style="height:35%"></i>
+                <i class="bar" style="height:55%"></i>
+                <i class="bar" style="height:42%"></i>
+                <i class="bar" style="height:76%"></i>
+                <i class="bar" style="height:64%"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <aside class="release-panel" aria-label="Release status">
-          <h2>Release Channel</h2>
-          <ul class="status">
-            <li><span class="dot"></span><span>Windows x64 single-file packages are published as ZIP release assets.</span></li>
-            <li><span class="dot"></span><span>Each release version follows the Git tag used by the private build workflow.</span></li>
-            <li><span class="dot"></span><span>Customers can download releases without access to the private source repository.</span></li>
-          </ul>
-        </aside>
-      </section>
+      <div class="wrap">
+        <div class="hero-copy">
+          <p class="eyebrow">Electricity billing software for serious local operators</p>
+          <h1>VoltaLog</h1>
+          <p>Run customer subscriptions, meter readings, invoices, receipts, payments, expenses, backups, and reports from one focused Windows application built for electricity billing offices.</p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/slack90-hub/VoltaLogLb/releases">Get the latest release</a>
+            <a class="button secondary" href="#features">See what it does</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <section class="features" id="features" aria-label="VoltaLog highlights">
-        <article class="feature">
-          <h3>Billing Office Workflow</h3>
-          <p>Manage customers, meter readings, invoices, payments, receipts, expenses, and reports from one desktop app.</p>
-        </article>
-        <article class="feature">
-          <h3>Offline Operation</h3>
-          <p>Designed for local Windows use with durable data storage, backups, and customer-ready release packaging.</p>
-        </article>
-        <article class="feature">
-          <h3>Controlled Releases</h3>
-          <p>Public downloads are separated from private source code and versioned through the release workflow.</p>
-        </article>
-      </section>
-    </main>
+    <div class="trust-strip" aria-label="Product highlights">
+      <div class="trust-item"><strong>One app</strong><span>Customers, cycles, readings, invoices, payments, reports, and backups.</span></div>
+      <div class="trust-item"><strong>Offline</strong><span>Runs locally on Windows without depending on a live internet connection.</span></div>
+      <div class="trust-item"><strong>Bilingual</strong><span>Supports English and Arabic copies for customer-facing reports.</span></div>
+      <div class="trust-item"><strong>Controlled</strong><span>Private source code with public customer release downloads.</span></div>
+    </div>
 
-    <footer>
-      VoltaLog public release page. Source code is maintained privately by slack90-hub.
-    </footer>
-  </div>
+    <section class="problem">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Stop running billing from scattered spreadsheets.</h2>
+          <p>Electricity billing offices need accuracy, speed, and clear customer records. VoltaLog keeps the daily work in one place so operators can close cycles with less confusion and fewer manual mistakes.</p>
+        </div>
+        <div class="problem-grid">
+          <article class="tile">
+            <h3>Less manual checking</h3>
+            <p>Readings, invoices, payments, and balances stay connected, so the office does not waste time reconciling the same customer in multiple files.</p>
+          </article>
+          <article class="tile">
+            <h3>Clearer customer service</h3>
+            <p>When a customer asks about an invoice, receipt, or balance, the operator can answer from the same customer history instead of searching through folders.</p>
+          </article>
+          <article class="tile">
+            <h3>Better cycle control</h3>
+            <p>Billing cycles, subscriptions, amperage, tariffs, and payment tracking are organized around the real workflow of a local power office.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Everything a billing office expects.</h2>
+          <p>VoltaLog is built around the core jobs your staff repeats every month, with practical screens for fast data entry and reliable customer follow-up.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="tile"><h3>Customer management</h3><p>Store customer details, meter IDs, subscription status, amperage level, recurring discounts, and account history.</p></article>
+          <article class="tile"><h3>Meter readings</h3><p>Enter cycle readings, track previous and current kWh, and keep reading work tied to the correct billing period.</p></article>
+          <article class="tile"><h3>Invoices and receipts</h3><p>Create customer invoices, record payments, issue receipts, and keep balances visible for collection follow-up.</p></article>
+          <article class="tile"><h3>Reports</h3><p>Prepare customer lists, invoice details, receipts, statements of account, and Arabic copies for customer communication.</p></article>
+          <article class="tile"><h3>Expenses and office tracking</h3><p>Record operating expenses beside billing income so the business can review more than just meter readings.</p></article>
+          <article class="tile"><h3>Backup and version control</h3><p>Local data protection, backup status, and controlled customer releases make the system easier to operate responsibly.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="workflow" id="workflow">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>A monthly cycle your team can repeat.</h2>
+          <p>VoltaLog follows the way a billing office actually works, from setup to customer collection.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><b>1</b><h3>Prepare customers</h3><p>Add customers, meter IDs, subscriptions, amperage, and billing model.</p></article>
+          <article class="step"><b>2</b><h3>Enter readings</h3><p>Record current readings and keep cycle data organized.</p></article>
+          <article class="step"><b>3</b><h3>Generate invoices</h3><p>Calculate customer bills using the configured tariffs and cycle data.</p></article>
+          <article class="step"><b>4</b><h3>Collect payments</h3><p>Record receipts, allocations, balances, and customer payment history.</p></article>
+          <article class="step"><b>5</b><h3>Review reports</h3><p>Print, export, and review business records before the next cycle starts.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="value">
+      <div class="wrap proof">
+        <div class="quote">
+          <p>VoltaLog is not a generic accounting screen. It is a focused billing tool for electricity subscription offices that need cleaner cycles and faster customer answers.</p>
+        </div>
+        <div class="proof-list">
+          <div class="proof-row"><span class="check">✓</span><span><strong>Built for operator speed</strong>Daily screens are direct, dense, and practical for repeated billing-office work.</span></div>
+          <div class="proof-row"><span class="check">✓</span><span><strong>Works without cloud dependency</strong>The office can keep operating locally even when internet access is unreliable.</span></div>
+          <div class="proof-row"><span class="check">✓</span><span><strong>Customer-ready output</strong>Invoices, receipts, statements, and reports help staff communicate clearly with customers.</span></div>
+          <div class="proof-row"><span class="check">✓</span><span><strong>Controlled delivery</strong>Customers can download releases from this public page while the source code remains private.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="wrap cta-box">
+        <div>
+          <h2>Ready to modernize your billing office?</h2>
+          <p>Use VoltaLog to replace fragile spreadsheets with a dedicated Windows billing workflow for customers, readings, invoices, receipts, reports, and backups.</p>
+        </div>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/slack90-hub/VoltaLogLb/releases">Download release</a>
+          <a class="button secondary" href="https://github.com/slack90-hub/VoltaLogLb">View public repo</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Questions customers ask.</h2>
+          <p>Short answers for buyers comparing VoltaLog with manual spreadsheets or generic business software.</p>
+        </div>
+        <div class="faq-grid">
+          <article class="faq-item"><h3>Is VoltaLog for electricity billing only?</h3><p>Yes. It is specialized for customer subscriptions, meter readings, tariffs, invoices, payments, receipts, and reports used by electricity billing offices.</p></article>
+          <article class="faq-item"><h3>Does it need internet?</h3><p>The desktop app is designed for local Windows operation. Internet is mainly useful for downloading releases and updates.</p></article>
+          <article class="faq-item"><h3>Can customers receive printed documents?</h3><p>Yes. The workflow supports customer-facing invoices, receipts, statements, and report output, including Arabic copies where configured.</p></article>
+          <article class="faq-item"><h3>Where do I download it?</h3><p>Use the releases section of this public repository. Each ZIP package is created by the private build workflow and published here for customer access.</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>VoltaLog public product page.</span>
+      <span>Source code maintained privately by slack90-hub.</span>
+    </div>
+  </footer>
 </body>
 </html>
