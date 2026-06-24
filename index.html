@@ -10,97 +10,38 @@
       color-scheme: light;
       --ink: #132326;
       --muted: #52656a;
-      --soft: #eef4f3;
-      --panel: #ffffff;
-      --line: #d7e1df;
+      --line: #d8e3e1;
       --teal: #08736d;
       --teal-dark: #064f4b;
       --gold: #e2aa2f;
-      --red: #b94b45;
       --green: #2f7d4f;
-      --navy: #172f45;
-      --paper: #faf7ef;
+      --cream: #faf7ef;
+      --soft: #eef4f3;
+      --navy: #10272c;
+      --white: #fff;
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      color: var(--ink);
-      background: #fbfcfc;
-    }
-
+    body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); background: #fbfcfc; }
     a { color: inherit; }
 
     .topbar {
       position: fixed;
       z-index: 20;
-      top: 0;
-      left: 0;
-      right: 0;
-      border-bottom: 1px solid rgba(255,255,255,0.18);
-      background: rgba(19, 35, 38, 0.86);
+      inset: 0 0 auto;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+      background: rgba(19,35,38,.88);
       backdrop-filter: blur(14px);
     }
 
-    .nav {
-      width: min(1160px, calc(100% - 32px));
-      margin: 0 auto;
-      min-height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      color: #fff;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 21px;
-      text-decoration: none;
-    }
-
-    .brand-mark {
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: var(--gold);
-      color: #1b2527;
-      font-weight: 900;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.82);
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .nav-cta {
-      min-height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 14px;
-      border-radius: 6px;
-      background: #fff;
-      color: var(--teal-dark);
-      font-weight: 800;
-    }
+    .nav, .wrap, .footer-inner { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+    .nav { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: #fff; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 850; font-size: 21px; text-decoration: none; }
+    .brand-logo { width: 44px; height: 44px; object-fit: contain; display: block; border-radius: 10px; background: #fff; padding: 4px; box-shadow: 0 6px 16px rgba(0,0,0,.18); }
+    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 14px; color: rgba(255,255,255,.84); }
+    .nav-links a { text-decoration: none; white-space: nowrap; }
+    .nav-cta { min-height: 38px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 6px; background: #fff; color: var(--teal-dark); font-weight: 850; }
 
     .hero {
       position: relative;
@@ -110,479 +51,100 @@
       align-items: end;
       padding: 116px 0 56px;
       background:
-        linear-gradient(90deg, rgba(7, 27, 31, 0.94) 0%, rgba(7, 27, 31, 0.78) 45%, rgba(7, 27, 31, 0.34) 100%),
-        radial-gradient(circle at 76% 34%, rgba(226, 170, 47, 0.24), transparent 28%),
+        linear-gradient(90deg, rgba(7,27,31,.94) 0%, rgba(7,27,31,.78) 45%, rgba(7,27,31,.34) 100%),
+        radial-gradient(circle at 76% 34%, rgba(226,170,47,.24), transparent 28%),
         linear-gradient(135deg, #0a2c31, #173c42 45%, #f1efe7 45%, #f1efe7 100%);
     }
 
-    .hero-scene {
-      position: absolute;
-      inset: 94px max(24px, calc((100vw - 1160px) / 2)) auto auto;
-      width: min(680px, 52vw);
-      min-height: 480px;
-      opacity: 0.98;
-    }
+    .hero-copy { position: relative; z-index: 2; max-width: 650px; color: #fff; }
+    .eyebrow { margin: 0 0 16px; color: #f4d27a; font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 0; }
+    h1 { margin: 0; font-size: clamp(52px, 8vw, 104px); line-height: .92; letter-spacing: 0; }
+    .hero-copy p { max-width: 590px; margin: 24px 0 0; font-size: clamp(18px, 2.2vw, 24px); line-height: 1.5; color: rgba(255,255,255,.88); }
 
-    .monitor {
-      position: absolute;
-      right: 0;
-      top: 48px;
-      width: 600px;
-      max-width: 100%;
-      padding: 18px;
-      border-radius: 18px;
-      background: #10262b;
-      box-shadow: 0 32px 70px rgba(0,0,0,0.35);
-      transform: rotate(-2deg);
-    }
-
-    .screen {
-      min-height: 344px;
-      border-radius: 10px;
-      background: #f7faf9;
-      padding: 18px;
-      overflow: hidden;
-    }
-
-    .screen-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      font-weight: 800;
-      color: #163034;
-    }
-
-    .screen-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .metric {
-      border: 1px solid #dbe6e4;
-      border-radius: 8px;
-      padding: 12px;
-      background: #fff;
-    }
-
-    .metric span {
-      display: block;
-      color: #66777b;
-      font-size: 11px;
-      margin-bottom: 5px;
-    }
-
-    .metric strong {
-      font-size: 23px;
-      color: var(--teal-dark);
-    }
-
-    .table {
-      border: 1px solid #dbe6e4;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1.25fr .8fr .8fr .8fr;
-      gap: 10px;
-      padding: 11px 12px;
-      border-bottom: 1px solid #edf2f1;
-      color: #283b40;
-      font-size: 12px;
-    }
-
-    .row:first-child {
-      background: #eef5f4;
-      color: #5a6b70;
-      font-weight: 800;
-    }
-
+    .hero-scene { position: absolute; inset: 96px max(24px, calc((100vw - 1160px) / 2)) auto auto; width: min(680px, 52vw); min-height: 480px; }
+    .monitor { position: absolute; right: 0; top: 48px; width: 600px; max-width: 100%; padding: 18px; border-radius: 18px; background: #10262b; box-shadow: 0 32px 70px rgba(0,0,0,.35); transform: rotate(-2deg); }
+    .screen { min-height: 344px; border-radius: 10px; background: #f7faf9; padding: 18px; overflow: hidden; }
+    .screen-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-weight: 850; color: #163034; }
+    .screen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .metric { border: 1px solid #dbe6e4; border-radius: 8px; padding: 12px; background: #fff; }
+    .metric span { display: block; color: #66777b; font-size: 11px; margin-bottom: 5px; }
+    .metric strong { font-size: 23px; color: var(--teal-dark); }
+    .table { border: 1px solid #dbe6e4; border-radius: 8px; overflow: hidden; background: #fff; }
+    .row { display: grid; grid-template-columns: 1.25fr .8fr .8fr .8fr; gap: 10px; padding: 11px 12px; border-bottom: 1px solid #edf2f1; color: #283b40; font-size: 12px; }
+    .row:first-child { background: #eef5f4; color: #5a6b70; font-weight: 850; }
     .row:last-child { border-bottom: 0; }
-
-    .phone {
-      position: absolute;
-      left: 8px;
-      bottom: 10px;
-      width: 190px;
-      border-radius: 28px;
-      padding: 13px;
-      background: #12272c;
-      box-shadow: 0 28px 46px rgba(0,0,0,0.34);
-      transform: rotate(5deg);
-    }
-
-    .phone-screen {
-      min-height: 300px;
-      border-radius: 20px;
-      padding: 16px;
-      background: #fff;
-    }
-
-    .receipt {
-      display: grid;
-      gap: 10px;
-      color: #21363a;
-    }
-
+    .phone { position: absolute; left: 8px; bottom: 10px; width: 190px; border-radius: 28px; padding: 13px; background: #12272c; box-shadow: 0 28px 46px rgba(0,0,0,.34); transform: rotate(5deg); }
+    .phone-screen { min-height: 300px; border-radius: 20px; padding: 16px; background: #fff; color: #21363a; }
+    .pill { width: fit-content; padding: 5px 8px; border-radius: 999px; color: #fff; background: var(--green); font-size: 11px; font-weight: 850; }
+    .receipt { display: grid; gap: 10px; }
     .receipt b { font-size: 20px; }
+    .bars { display: flex; align-items: end; gap: 7px; height: 86px; margin-top: 10px; }
+    .bar { flex: 1; border-radius: 4px 4px 0 0; background: var(--teal); }
 
-    .pill {
-      width: fit-content;
-      padding: 5px 8px;
-      border-radius: 999px;
-      color: #fff;
-      background: var(--green);
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .bars {
-      display: flex;
-      align-items: end;
-      gap: 7px;
-      height: 86px;
-      margin-top: 10px;
-    }
-
-    .bar {
-      flex: 1;
-      border-radius: 4px 4px 0 0;
-      background: var(--teal);
-    }
-
-    .wrap {
-      width: min(1160px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .hero-copy {
-      position: relative;
-      z-index: 2;
-      max-width: 650px;
-      color: #fff;
-    }
-
-    .eyebrow {
-      margin: 0 0 16px;
-      color: #f4d27a;
-      font-size: 13px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(52px, 8vw, 104px);
-      line-height: 0.92;
-      letter-spacing: 0;
-    }
-
-    .hero-copy p {
-      max-width: 590px;
-      margin: 24px 0 0;
-      font-size: clamp(18px, 2.2vw, 24px);
-      line-height: 1.5;
-      color: rgba(255,255,255,0.88);
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 32px;
-    }
-
-    .button {
-      min-height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 20px;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      text-decoration: none;
-      font-weight: 900;
-    }
-
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; padding: 0 20px; border-radius: 6px; border: 1px solid transparent; text-decoration: none; font-weight: 900; }
     .button.primary { background: var(--gold); color: #172326; }
-    .button.secondary { border-color: rgba(255,255,255,0.46); color: #fff; }
-    .button.dark { background: var(--teal); color: #fff; }
+    .button.secondary { border-color: rgba(255,255,255,.46); color: #fff; }
     .button.outline { border-color: var(--teal); color: var(--teal-dark); }
 
-    .trust-strip {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-      border-bottom: 1px solid var(--line);
-    }
+    .trust-strip { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); border-bottom: 1px solid var(--line); }
+    .trust-item { padding: 28px 22px; background: #fff; }
+    .trust-item strong { display: block; font-size: 28px; color: var(--teal-dark); margin-bottom: 6px; }
+    .trust-item span { color: var(--muted); line-height: 1.45; }
 
-    .trust-item {
-      padding: 28px 22px;
-      background: #fff;
-    }
+    section { padding: 76px 0; }
+    .section-head { max-width: 770px; margin-bottom: 32px; }
+    .section-head h2 { margin: 0; font-size: clamp(34px, 5vw, 56px); line-height: 1; letter-spacing: 0; }
+    .section-head p { margin: 18px 0 0; color: var(--muted); font-size: 19px; line-height: 1.6; }
+    .problem { background: var(--cream); }
+    .problem-grid, .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+    .tile { min-height: 210px; padding: 24px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    .tile h3 { margin: 0 0 12px; font-size: 22px; }
+    .tile p { margin: 0; color: var(--muted); line-height: 1.58; }
+    .feature-grid .tile { border-top: 4px solid var(--teal); }
 
-    .trust-item strong {
-      display: block;
-      font-size: 28px;
-      color: var(--teal-dark);
-      margin-bottom: 6px;
-    }
+    .workflow { background: var(--navy); color: #fff; }
+    .workflow .section-head p, .step p { color: rgba(255,255,255,.74); }
+    .steps { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; }
+    .step { min-height: 190px; padding: 20px; border: 1px solid rgba(255,255,255,.16); border-radius: 8px; background: rgba(255,255,255,.06); }
+    .step b { display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 16px; border-radius: 50%; background: var(--gold); color: #172326; }
+    .step h3 { margin: 0 0 10px; font-size: 18px; }
+    .step p { margin: 0; line-height: 1.55; }
 
-    .trust-item span {
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    section {
-      padding: 76px 0;
-    }
-
-    .section-head {
-      max-width: 770px;
-      margin-bottom: 32px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .section-head p {
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: 19px;
-      line-height: 1.6;
-    }
-
-    .problem {
-      background: var(--paper);
-    }
-
-    .problem-grid,
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .tile {
-      min-height: 210px;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .tile h3 {
-      margin: 0 0 12px;
-      font-size: 22px;
-    }
-
-    .tile p,
-    .tile li {
-      color: var(--muted);
-      line-height: 1.58;
-    }
-
-    .tile ul {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .feature-grid .tile {
-      border-top: 4px solid var(--teal);
-    }
-
-    .workflow {
-      background: #10272c;
-      color: #fff;
-    }
-
-    .workflow .section-head p { color: rgba(255,255,255,0.72); }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .step {
-      min-height: 190px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 8px;
-      background: rgba(255,255,255,0.06);
-    }
-
-    .step b {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      margin-bottom: 16px;
-      border-radius: 50%;
-      background: var(--gold);
-      color: #172326;
-    }
-
-    .step h3 {
-      margin: 0 0 10px;
-      font-size: 18px;
-    }
-
-    .step p {
-      margin: 0;
-      color: rgba(255,255,255,0.74);
-      line-height: 1.55;
-    }
-
-    .proof {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .quote {
-      padding: 34px;
-      border-radius: 8px;
-      background: var(--soft);
-      border-left: 5px solid var(--gold);
-    }
-
-    .quote p {
-      margin: 0;
-      color: #25383c;
-      font-size: 24px;
-      line-height: 1.45;
-      font-weight: 700;
-    }
-
-    .proof-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .proof-row {
-      display: grid;
-      grid-template-columns: 28px 1fr;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .check {
-      width: 24px;
-      height: 24px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--green);
-      color: #fff;
-      font-weight: 900;
-      font-size: 14px;
-    }
-
+    .proof { display: grid; grid-template-columns: .95fr 1.05fr; gap: 30px; align-items: center; }
+    .quote { padding: 34px; border-radius: 8px; background: var(--soft); border-left: 5px solid var(--gold); }
+    .quote p { margin: 0; color: #25383c; font-size: 24px; line-height: 1.45; font-weight: 750; }
+    .proof-list { display: grid; gap: 14px; }
+    .proof-row { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
+    .check { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: var(--green); color: #fff; font-weight: 900; font-size: 14px; }
     .proof-row strong { display: block; margin-bottom: 4px; }
     .proof-row span { color: var(--muted); line-height: 1.55; }
 
-    .cta {
-      padding: 72px 0;
-      background: linear-gradient(135deg, var(--teal-dark), #173c42);
-      color: #fff;
-    }
+    .cta { padding: 72px 0; background: linear-gradient(135deg, var(--teal-dark), #173c42); color: #fff; }
+    .cta-box { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+    .cta h2 { margin: 0; font-size: clamp(32px, 5vw, 58px); line-height: 1; letter-spacing: 0; }
+    .cta p { margin: 16px 0 0; max-width: 700px; color: rgba(255,255,255,.78); line-height: 1.6; font-size: 18px; }
 
-    .cta-box {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 24px;
-      align-items: center;
-    }
+    .faq { background: #fff; }
+    .faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .faq-item { padding: 24px; border: 1px solid var(--line); border-radius: 8px; background: #fbfcfc; }
+    .faq-item h3 { margin: 0 0 10px; font-size: 19px; }
+    .faq-item p { margin: 0; color: var(--muted); line-height: 1.58; }
 
-    .cta h2 {
-      margin: 0;
-      font-size: clamp(32px, 5vw, 58px);
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .cta p {
-      margin: 16px 0 0;
-      max-width: 700px;
-      color: rgba(255,255,255,0.78);
-      line-height: 1.6;
-      font-size: 18px;
-    }
-
-    .faq {
-      background: #fff;
-    }
-
-    .faq-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .faq-item {
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfc;
-    }
-
-    .faq-item h3 {
-      margin: 0 0 10px;
-      font-size: 19px;
-    }
-
-    .faq-item p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.58;
-    }
-
-    footer {
-      padding: 28px 0;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      background: #fff;
-      font-size: 14px;
-    }
-
-    .footer-inner {
-      width: min(1160px, calc(100% - 32px));
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-    }
+    footer { padding: 28px 0; border-top: 1px solid var(--line); color: var(--muted); background: #fff; font-size: 14px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 16px; }
 
     @media (max-width: 980px) {
       .hero { min-height: auto; padding-top: 106px; }
       .hero-scene { position: relative; inset: auto; width: 100%; min-height: 420px; margin: 34px auto 0; }
       .hero-copy { max-width: 760px; }
-      .trust-strip,
-      .problem-grid,
-      .feature-grid,
-      .steps,
-      .proof,
-      .cta-box,
-      .faq-grid { grid-template-columns: 1fr 1fr; }
+      .trust-strip, .problem-grid, .feature-grid, .steps, .proof, .cta-box, .faq-grid { grid-template-columns: 1fr 1fr; }
       .monitor { width: 100%; }
       .phone { left: 24px; }
     }
 
     @media (max-width: 680px) {
-      .nav { align-items: flex-start; padding: 12px 0; }
+      .nav { padding: 12px 0; }
       .nav-links { display: none; }
       .hero { padding-bottom: 36px; }
       h1 { font-size: clamp(48px, 18vw, 72px); }
@@ -591,13 +153,7 @@
       .screen { min-height: 284px; padding: 12px; }
       .screen-grid { grid-template-columns: 1fr; }
       .phone { display: none; }
-      .trust-strip,
-      .problem-grid,
-      .feature-grid,
-      .steps,
-      .proof,
-      .cta-box,
-      .faq-grid { grid-template-columns: 1fr; }
+      .trust-strip, .problem-grid, .feature-grid, .steps, .proof, .cta-box, .faq-grid { grid-template-columns: 1fr; }
       section { padding: 54px 0; }
       .footer-inner { flex-direction: column; }
     }
@@ -606,7 +162,7 @@
 <body>
   <header class="topbar">
     <nav class="nav" aria-label="Main navigation">
-      <a class="brand" href="#top"><span class="brand-mark">V</span>VoltaLog</a>
+      <a class="brand" href="#top"><img class="brand-logo" src="assets/volta-logo.png" alt="VoltaLog logo">VoltaLog</a>
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#workflow">Workflow</a>
@@ -644,13 +200,7 @@
               <b>Receipt #1048</b>
               <span>Customer payment recorded</span>
               <span>Balance updated instantly</span>
-              <div class="bars">
-                <i class="bar" style="height:35%"></i>
-                <i class="bar" style="height:55%"></i>
-                <i class="bar" style="height:42%"></i>
-                <i class="bar" style="height:76%"></i>
-                <i class="bar" style="height:64%"></i>
-              </div>
+              <div class="bars"><i class="bar" style="height:35%"></i><i class="bar" style="height:55%"></i><i class="bar" style="height:42%"></i><i class="bar" style="height:76%"></i><i class="bar" style="height:64%"></i></div>
             </div>
           </div>
         </div>
@@ -683,28 +233,16 @@
           <p>Electricity billing offices need accuracy, speed, and clear customer records. VoltaLog keeps the daily work in one place so operators can close cycles with less confusion and fewer manual mistakes.</p>
         </div>
         <div class="problem-grid">
-          <article class="tile">
-            <h3>Less manual checking</h3>
-            <p>Readings, invoices, payments, and balances stay connected, so the office does not waste time reconciling the same customer in multiple files.</p>
-          </article>
-          <article class="tile">
-            <h3>Clearer customer service</h3>
-            <p>When a customer asks about an invoice, receipt, or balance, the operator can answer from the same customer history instead of searching through folders.</p>
-          </article>
-          <article class="tile">
-            <h3>Better cycle control</h3>
-            <p>Billing cycles, subscriptions, amperage, tariffs, and payment tracking are organized around the real workflow of a local power office.</p>
-          </article>
+          <article class="tile"><h3>Less manual checking</h3><p>Readings, invoices, payments, and balances stay connected, so the office does not waste time reconciling the same customer in multiple files.</p></article>
+          <article class="tile"><h3>Clearer customer service</h3><p>When a customer asks about an invoice, receipt, or balance, the operator can answer from the same customer history instead of searching through folders.</p></article>
+          <article class="tile"><h3>Better cycle control</h3><p>Billing cycles, subscriptions, amperage, tariffs, and payment tracking are organized around the real workflow of a local power office.</p></article>
         </div>
       </div>
     </section>
 
     <section id="features">
       <div class="wrap">
-        <div class="section-head">
-          <h2>Everything a billing office expects.</h2>
-          <p>VoltaLog is built around the core jobs your staff repeats every month, with practical screens for fast data entry and reliable customer follow-up.</p>
-        </div>
+        <div class="section-head"><h2>Everything a billing office expects.</h2><p>VoltaLog is built around the core jobs your staff repeats every month, with practical screens for fast data entry and reliable customer follow-up.</p></div>
         <div class="feature-grid">
           <article class="tile"><h3>Customer management</h3><p>Store customer details, meter IDs, subscription status, amperage level, recurring discounts, and account history.</p></article>
           <article class="tile"><h3>Meter readings</h3><p>Enter cycle readings, track previous and current kWh, and keep reading work tied to the correct billing period.</p></article>
@@ -718,10 +256,7 @@
 
     <section class="workflow" id="workflow">
       <div class="wrap">
-        <div class="section-head">
-          <h2>A monthly cycle your team can repeat.</h2>
-          <p>VoltaLog follows the way a billing office actually works, from setup to customer collection.</p>
-        </div>
+        <div class="section-head"><h2>A monthly cycle your team can repeat.</h2><p>VoltaLog follows the way a billing office actually works, from setup to customer collection.</p></div>
         <div class="steps">
           <article class="step"><b>1</b><h3>Prepare customers</h3><p>Add customers, meter IDs, subscriptions, amperage, and billing model.</p></article>
           <article class="step"><b>2</b><h3>Enter readings</h3><p>Record current readings and keep cycle data organized.</p></article>
@@ -734,9 +269,7 @@
 
     <section id="value">
       <div class="wrap proof">
-        <div class="quote">
-          <p>VoltaLog is not a generic accounting screen. It is a focused billing tool for electricity subscription offices that need cleaner cycles and faster customer answers.</p>
-        </div>
+        <div class="quote"><p>VoltaLog is not a generic accounting screen. It is a focused billing tool for electricity subscription offices that need cleaner cycles and faster customer answers.</p></div>
         <div class="proof-list">
           <div class="proof-row"><span class="check">✓</span><span><strong>Built for operator speed</strong>Daily screens are direct, dense, and practical for repeated billing-office work.</span></div>
           <div class="proof-row"><span class="check">✓</span><span><strong>Works without cloud dependency</strong>The office can keep operating locally even when internet access is unreliable.</span></div>
@@ -748,23 +281,14 @@
 
     <section class="cta">
       <div class="wrap cta-box">
-        <div>
-          <h2>Ready to modernize your billing office?</h2>
-          <p>Use VoltaLog to replace fragile spreadsheets with a dedicated Windows billing workflow for customers, readings, invoices, receipts, reports, and backups.</p>
-        </div>
-        <div class="actions">
-          <a class="button primary" href="https://github.com/slack90-hub/VoltaLogLb/releases">Download release</a>
-          <a class="button secondary" href="https://github.com/slack90-hub/VoltaLogLb">View public repo</a>
-        </div>
+        <div><h2>Ready to modernize your billing office?</h2><p>Use VoltaLog to replace fragile spreadsheets with a dedicated Windows billing workflow for customers, readings, invoices, receipts, reports, and backups.</p></div>
+        <div class="actions"><a class="button primary" href="https://github.com/slack90-hub/VoltaLogLb/releases">Download release</a><a class="button secondary" href="https://github.com/slack90-hub/VoltaLogLb">View public repo</a></div>
       </div>
     </section>
 
     <section class="faq" id="faq">
       <div class="wrap">
-        <div class="section-head">
-          <h2>Questions customers ask.</h2>
-          <p>Short answers for buyers comparing VoltaLog with manual spreadsheets or generic business software.</p>
-        </div>
+        <div class="section-head"><h2>Questions customers ask.</h2><p>Short answers for buyers comparing VoltaLog with manual spreadsheets or generic business software.</p></div>
         <div class="faq-grid">
           <article class="faq-item"><h3>Is VoltaLog for electricity billing only?</h3><p>Yes. It is specialized for customer subscriptions, meter readings, tariffs, invoices, payments, receipts, and reports used by electricity billing offices.</p></article>
           <article class="faq-item"><h3>Does it need internet?</h3><p>The desktop app is designed for local Windows operation. Internet is mainly useful for downloading releases and updates.</p></article>
@@ -775,11 +299,6 @@
     </section>
   </main>
 
-  <footer>
-    <div class="footer-inner">
-      <span>VoltaLog public product page.</span>
-      <span>Source code maintained privately by slack90-hub.</span>
-    </div>
-  </footer>
+  <footer><div class="footer-inner"><span>VoltaLog public product page.</span><span>Source code maintained privately by slack90-hub.</span></div></footer>
 </body>
 </html>
