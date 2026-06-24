@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VoltaLog</title>
+  <meta name="description" content="VoltaLog customer release page for the Windows electricity billing application.">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17202a;
+      --muted: #5f6f7c;
+      --line: #d9e2ea;
+      --accent: #0b7a75;
+      --accent-dark: #075c58;
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --warm: #f2c14e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    }
+
+    .page {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 12px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 22px;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    main {
+      padding-top: 48px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.65;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--accent-dark);
+    }
+
+    .release-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 14px 36px rgba(23, 32, 42, 0.08);
+    }
+
+    .release-panel h2 {
+      margin: 0 0 16px;
+      font-size: 22px;
+    }
+
+    .status {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .status li {
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      gap: 10px;
+      align-items: start;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      margin-top: 6px;
+      border-radius: 50%;
+      background: var(--warm);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .feature {
+      padding: 20px;
+      border-top: 3px solid var(--accent);
+      background: #fff;
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    footer {
+      margin-top: 54px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      header,
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        align-items: flex-start;
+      }
+
+      nav {
+        flex-wrap: wrap;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand"><span class="mark">V</span> VoltaLog</div>
+      <nav aria-label="Main navigation">
+        <a href="#release">Release</a>
+        <a href="#features">Features</a>
+        <a href="https://github.com/slack90-hub/VoltaLogLb/releases">Downloads</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="release">
+        <div>
+          <h1>VoltaLog customer releases</h1>
+          <p class="lead">A public download page for the VoltaLog Windows electricity billing application. Release ZIP files are published here while the source code stays private.</p>
+          <div class="actions">
+            <a class="button" href="https://github.com/slack90-hub/VoltaLogLb/releases">View downloads</a>
+            <a class="button secondary" href="https://github.com/slack90-hub/VoltaLogLb">Open repository</a>
+          </div>
+        </div>
+
+        <aside class="release-panel" aria-label="Release status">
+          <h2>Release Channel</h2>
+          <ul class="status">
+            <li><span class="dot"></span><span>Windows x64 single-file packages are published as ZIP release assets.</span></li>
+            <li><span class="dot"></span><span>Each release version follows the Git tag used by the private build workflow.</span></li>
+            <li><span class="dot"></span><span>Customers can download releases without access to the private source repository.</span></li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="features" id="features" aria-label="VoltaLog highlights">
+        <article class="feature">
+          <h3>Billing Office Workflow</h3>
+          <p>Manage customers, meter readings, invoices, payments, receipts, expenses, and reports from one desktop app.</p>
+        </article>
+        <article class="feature">
+          <h3>Offline Operation</h3>
+          <p>Designed for local Windows use with durable data storage, backups, and customer-ready release packaging.</p>
+        </article>
+        <article class="feature">
+          <h3>Controlled Releases</h3>
+          <p>Public downloads are separated from private source code and versioned through the release workflow.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      VoltaLog public release page. Source code is maintained privately by slack90-hub.
+    </footer>
+  </div>
+</body>
+</html>
