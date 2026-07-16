@@ -38,18 +38,24 @@
         color:#fff
       }
       .nav {
-        min-height:78px;
+        min-height:92px;
         display:flex;
         align-items:center;
         justify-content:space-between
       }
       .brand {
-        font-size:30px;
-        font-weight:950;
-        letter-spacing:-.04em
+        display:inline-flex;
+        align-items:center;
+        padding:5px 10px;
+        border-radius:10px;
+        background:#fff;
+        box-shadow:0 8px 20px rgba(0,0,0,.18)
       }
-      .brand span {
-        color:var(--gold)
+      .brand-logo {
+        display:block;
+        width:166px;
+        height:64px;
+        object-fit:contain
       }
       .nav a {
         text-decoration:none
@@ -203,10 +209,7 @@
     <header class="top">
       <div class="wrap nav">
         <a class="brand" href="/">
-          MDS
-          <span>
-            .
-          </span>
+          <img class="brand-logo" src="assets/MurexDS.png" alt="Murex Digital Solutions">
         </a>
         <a href="mailto:mds@mdslb.com">
           Contact
@@ -334,7 +337,7 @@
     <footer>
       <div class="wrap footer">
         <strong>
-          MDS
+          Murex Digital Solutions
         </strong>
         <span>
           Technology & business software solutions.
