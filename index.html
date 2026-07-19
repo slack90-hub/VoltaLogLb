@@ -1,348 +1,66 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>
-      MDS | Technology & Business Solutions
-    </title>
-    <meta name="description" content="MDS develops practical technology and business software solutions, including VoltaLog generator billing software.">
-    <style>
-      :root {
-        --ink:#122326;
-        --muted:#607176;
-        --dark:#0d2b30;
-        --teal:#08736d;
-        --gold:#e2aa2f;
-        --cream:#faf7ef;
-        --white:#fff
-      }
-      * {
-        box-sizing:border-box
-      }
-      body {
-        margin:0;
-        font-family:Segoe UI,Arial,sans-serif;
-        color:var(--ink);
-        background:var(--cream)
-      }
-      a {
-        color:inherit
-      }
-      .wrap {
-        width:min(1120px,calc(100% - 32px));
-        margin:auto
-      }
-      .top {
-        background:var(--dark);
-        color:#fff
-      }
-      .nav {
-        min-height:92px;
-        display:flex;
-        align-items:center;
-        justify-content:space-between
-      }
-      .brand {
-        display:inline-flex;
-        align-items:center;
-        padding:5px 10px;
-        border-radius:10px;
-        background:#fff;
-        box-shadow:0 8px 20px rgba(0,0,0,.18)
-      }
-      .brand-logo {
-        display:block;
-        width:166px;
-        height:64px;
-        object-fit:contain
-      }
-      .nav a {
-        text-decoration:none
-      }
-      .hero {
-        padding:110px 0 100px;
-        background:radial-gradient(circle at 80% 20%,rgba(226,170,47,.22),transparent 30%),linear-gradient(135deg,#0d2b30,#16454b);
-        color:#fff
-      }
-      .hero h1 {
-        max-width:820px;
-        margin:0;
-        font-size:clamp(48px,8vw,92px);
-        line-height:.96;
-        letter-spacing:-.05em
-      }
-      .hero p {
-        max-width:720px;
-        margin:24px 0 0;
-        font-size:22px;
-        line-height:1.6;
-        color:rgba(255,255,255,.82)
-      }
-      .actions {
-        display:flex;
-        flex-wrap:wrap;
-        gap:12px;
-        margin-top:32px
-      }
-      .button {
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        min-height:50px;
-        padding:0 22px;
-        border-radius:9px;
-        text-decoration:none;
-        font-weight:900
-      }
-      .primary {
-        background:var(--gold);
-        color:#172326
-      }
-      .secondary {
-        border:1px solid rgba(255,255,255,.5);
-        color:#fff
-      }
-      .section {
-        padding:76px 0
-      }
-      .head {
-        max-width:760px;
-        margin-bottom:30px
-      }
-      .head h2 {
-        margin:0;
-        font-size:clamp(34px,5vw,54px);
-        letter-spacing:-.04em
-      }
-      .hero h2 {
-        margin:0;
-        font-size:clamp(34px,5vw,54px);
-        letter-spacing:-.04em
-      }
-      .head p {
-        color:var(--muted);
-        font-size:19px;
-        line-height:1.6
-      }
-      .grid {
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:22px
-      }
-      .card {
-        padding:30px;
-        border-radius:16px;
-        background:#fff;
-        box-shadow:0 18px 45px rgba(13,43,48,.09);
-        border:1px solid #dce6e4
-      }
-      .card .tag {
-        display:inline-block;
-        padding:6px 10px;
-        border-radius:999px;
-        background:#eef5f4;
-        color:var(--teal);
-        font-size:12px;
-        font-weight:900;
-        text-transform:uppercase
-      }
-      .card h3 {
-        margin:18px 0 10px;
-        font-size:30px
-      }
-      .card p {
-        color:var(--muted);
-        line-height:1.65
-      }
-      .card a {
-        margin-top:18px
-      }
-      .card.featured {
-        border:2px solid var(--gold);
-        box-shadow:0 18px 45px rgba(13,43,48,.14)
-      }
-      .coming {
-        opacity:.72
-      }
-      .contact {
-        background:#fff
-      }
-      .contact-box {
-        padding:34px;
-        border-radius:16px;
-        background:var(--dark);
-        color:#fff
-      }
-      .contact-box p {
-        color:rgba(255,255,255,.76);
-        font-size:18px;
-        line-height:1.6
-      }
-      footer {
-        padding:28px 0;
-        background:#fff;
-        color:var(--muted)
-      }
-      .footer {
-        display:flex;
-        justify-content:space-between;
-        gap:20px
-      }
-      @media(max-width:700px) {
-        .grid {
-          grid-template-columns:1fr
-        }
-        .hero {
-          padding:80px 0
-        }
-        .footer {
-          flex-direction:column
-        }
-        .button {
-          width:100%
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header class="top">
-      <div class="wrap nav">
-        <a class="brand" href="/">
-          <img class="brand-logo" src="assets/MurexDS.png" alt="Murex Digital Solutions">
-        </a>
-        <a href="mailto:mds@mdslb.com">
-          Contact
-        </a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MDS Lebanon | Business Software, Websites & Digital Solutions</title>
+  <meta name="description" content="Murex Digital Solutions builds practical business software, custom systems, websites, digital identities and marketing solutions for businesses in Lebanon.">
+  <link rel="canonical" href="https://mdslb.com/">
+  <link rel="alternate" hreflang="en" href="https://mdslb.com/">
+  <link rel="alternate" hreflang="ar" href="https://mdslb.com/ar/">
+  <link rel="alternate" hreflang="x-default" href="https://mdslb.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MDS Lebanon | Practical Digital Solutions">
+  <meta property="og:description" content="Business software, tailored systems, websites and digital growth—planned, delivered and supported in Lebanon.">
+  <meta property="og:url" content="https://mdslb.com/">
+  <meta property="og:image" content="https://mdslb.com/assets/MurexDS.png">
+  <meta name="theme-color" content="#0d2b30">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Murex Digital Solutions","alternateName":"MDS Lebanon","url":"https://mdslb.com/","logo":"https://mdslb.com/assets/MurexDS.png","email":"mds@mdslb.com","telephone":"+96176063312","areaServed":"Lebanon"}</script>
+  <style>
+    :root{--ink:#122326;--muted:#607176;--dark:#0d2b30;--dark2:#16454b;--teal:#08736d;--gold:#e2aa2f;--cream:#faf7ef;--white:#fff;--line:#dce6e4;--soft:#eef5f4}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--cream)}a{color:inherit}.wrap{width:min(1160px,calc(100% - 32px));margin:auto}
+    .top{position:sticky;top:0;z-index:30;background:rgba(13,43,48,.96);color:#fff;backdrop-filter:blur(14px)}.nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:inline-flex;align-items:center;padding:4px 9px;border-radius:10px;background:#fff}.brand img{display:block;width:145px;height:56px;object-fit:contain}.nav-links{display:flex;align-items:center;gap:20px;font-size:14px;font-weight:700}.nav-links a{text-decoration:none}.nav-cta,.lang{padding:11px 15px;border-radius:8px}.nav-cta{background:var(--gold);color:var(--ink)}.lang{border:1px solid rgba(255,255,255,.42)}
+    .hero{padding:100px 0 90px;background:radial-gradient(circle at 82% 18%,rgba(226,170,47,.24),transparent 31%),linear-gradient(135deg,var(--dark),var(--dark2));color:#fff}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}.eyebrow{color:#f4d27a;text-transform:uppercase;letter-spacing:.09em;font-weight:900;font-size:13px}.hero h1{margin:12px 0 20px;max-width:800px;font-size:clamp(45px,7vw,78px);line-height:.98;letter-spacing:-.05em}.hero .lead{max-width:760px;font-size:21px;line-height:1.65;color:rgba(255,255,255,.84)}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 22px;border-radius:9px;text-decoration:none;font-weight:900;border:1px solid transparent}.primary{background:var(--gold);color:var(--ink)}.secondary{border-color:rgba(255,255,255,.5);color:#fff}.outline{border-color:var(--teal);background:#fff;color:var(--dark)}
+    .hero-card{padding:28px;border-radius:18px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);box-shadow:0 24px 60px rgba(0,0,0,.22)}.hero-card strong{display:block;color:#f4d27a;font-size:20px}.hero-card p{color:rgba(255,255,255,.78);line-height:1.6}.hero-list{display:grid;gap:12px;margin-top:20px}.hero-list span{padding:13px 15px;border-radius:9px;background:rgba(255,255,255,.08);font-weight:750}
+    section{padding:78px 0}.head{max-width:800px;margin-bottom:34px}.head .kicker{color:var(--teal);font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.08em}.head h2{margin:10px 0 14px;font-size:clamp(34px,5vw,54px);line-height:1.04;letter-spacing:-.04em}.head p{margin:0;color:var(--muted);font-size:19px;line-height:1.65}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{padding:28px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 40px rgba(13,43,48,.08)}.card .icon{width:48px;height:48px;display:grid;place-items:center;border-radius:12px;background:var(--soft);color:var(--teal);font-size:24px}.card h3{margin:19px 0 10px;font-size:25px}.card p{color:var(--muted);line-height:1.65}.card-link{display:inline-block;margin-top:12px;color:var(--teal);font-weight:900;text-decoration:none}
+    .product{background:#fff}.product-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:42px;align-items:center}.product-shot{padding:11px;border-radius:17px;background:var(--dark);box-shadow:0 24px 60px rgba(13,43,48,.2)}.product-shot img{display:block;width:100%;border-radius:9px}.checks{display:grid;gap:12px;margin:24px 0}.checks span{position:relative;padding-left:30px;color:var(--muted);font-weight:650}.checks span:before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:950}
+    .process{background:var(--dark);color:#fff}.process .head p{color:rgba(255,255,255,.72)}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.step{padding:24px;border-radius:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}.step b{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--gold);color:var(--ink)}.step h3{margin:18px 0 8px}.step p{margin:0;color:rgba(255,255,255,.72);line-height:1.55}
+    .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.trust-item{padding:24px;border-left:4px solid var(--gold);background:#fff;border-radius:10px}.trust-item strong{display:block;font-size:21px}.trust-item span{display:block;margin-top:8px;color:var(--muted);line-height:1.5}.about{background:#fff}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:start}.about-copy{font-size:18px;line-height:1.75;color:var(--muted)}
+    .contact-box{padding:44px;border-radius:18px;background:linear-gradient(135deg,var(--dark),var(--dark2));color:#fff}.contact-box h2{margin:0;font-size:clamp(34px,5vw,52px)}.contact-box p{max-width:760px;color:rgba(255,255,255,.78);font-size:18px;line-height:1.65}.contact-details{display:flex;flex-wrap:wrap;gap:18px;margin-top:24px}.contact-details a{color:#fff;font-weight:750}.whatsapp{position:fixed;right:20px;bottom:20px;z-index:40;display:flex;align-items:center;gap:8px;padding:14px 18px;border-radius:999px;background:#25d366;color:#092d19;text-decoration:none;font-weight:950;box-shadow:0 12px 34px rgba(0,0,0,.22)}
+    footer{padding:32px 0;background:#fff;color:var(--muted)}.footer{display:flex;justify-content:space-between;align-items:center;gap:20px}.footer a{text-decoration:none}.footer-links{display:flex;gap:18px}
+    @media(max-width:900px){.nav-links a:not(.nav-cta):not(.lang){display:none}.hero-grid,.product-grid,.about-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.steps,.trust-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:620px){.brand img{width:112px}.nav-links{gap:8px}.nav-cta{display:none}.hero{padding:66px 0}.grid,.steps,.trust-grid{grid-template-columns:1fr}.button{width:100%}.contact-box{padding:28px}.footer{align-items:flex-start;flex-direction:column}.whatsapp{right:14px;bottom:14px}.lang{padding:9px 11px}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main navigation">
+      <a class="brand" href="/" aria-label="MDS home"><img src="assets/MurexDS.png" alt="Murex Digital Solutions logo"></a>
+      <div class="nav-links"><a href="#solutions">Solutions</a><a href="#voltalog">Products</a><a href="#about">About</a><a href="#contact">Contact</a><a class="lang" href="ar/" lang="ar">العربية</a><a class="nav-cta" href="https://wa.me/96176063312?text=Hello%20MDS%2C%20I%20would%20like%20to%20discuss%20a%20digital%20solution." target="_blank" rel="noopener">Talk to MDS</a></div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div><div class="eyebrow">Technology & business solutions · Lebanon</div><h1>Practical software and digital solutions for growing businesses.</h1><p class="lead">MDS builds business applications, websites, digital identities and tailored systems—supported from planning through implementation.</p><div class="actions"><a class="button primary" href="voltalog/">Explore VoltaLog</a><a class="button secondary" href="https://wa.me/96176063312?text=Hello%20MDS%2C%20I%20would%20like%20to%20discuss%20my%20business." target="_blank" rel="noopener">Talk on WhatsApp</a></div></div>
+        <aside class="hero-card"><strong>From business problem to working solution.</strong><p>We focus on useful systems, clear communication and dependable local support.</p><div class="hero-list"><span>Business software</span><span>Custom workflows & systems</span><span>Websites & digital identity</span><span>Implementation, training & support</span></div></aside>
       </div>
-    </header>
-    <main>
-      <section class="hero">
-        <div class="wrap">
-          <h1>Murex Digital Solutions</h1>
-          <h2>
-            Software that runs your business. A digital presence that grows it.
-          </h2>
-          <p>
-            MDS develops practical software and complete digital identities that help businesses work better, appear stronger online, and grow with confidence.
-          </p>
-          <div class="actions">
-            <a class="button primary" href="voltalog/">
-              Explore VoltaLog
-            </a>
-            <a class="button secondary" href="mailto:mds@mdslb.com">
-              Contact MDS
-            </a>
-          </div>
-        </div>
-      </section>
-      <section class="section">
-        <div class="wrap">
-          <div class="head">
-            <h2>
-              Our solutions
-            </h2>
-            <p>
-              We combine operational tools with a clear online presence, helping businesses become more efficient, credible, and easier for customers to find.
-            </p>
-          </div>
-          <div class="grid">
-            <article class="card featured">
-              <span class="tag">
-                Available now
-              </span>
-              <h3>
-                Business software products
-              </h3>
-              <p>
-                We create focused software that simplifies billing, customer records, payments, reporting, and daily operations. VoltaLog is our flagship product for generator and electricity subscription offices.
-              </p>
-              <div class="actions">
-                <a class="button primary" href="voltalog/">
-                  Explore VoltaLog
-                </a>
-                <a class="button" href="voltalog/ar.html">
-                  الصفحة العربية
-                </a>
-              </div>
-            </article>
-            <article class="card">
-              <span class="tag">
-                MDS service
-              </span>
-              <h3>
-                Tailored digital systems
-              </h3>
-              <p>
-                We design custom digital tools and workflows around the way each business actually works, from customer management and billing to process tracking and reporting.
-              </p>
-            </article>
-            <article class="card">
-              <span class="tag">
-                MDS service
-              </span>
-              <h3>
-                Digital identity &amp; presence
-              </h3>
-              <p>
-                We build the digital foundation of a business: brand identity, visual direction, website, social-media presence, and clear messaging that customers can understand and trust.
-              </p>
-            </article>
-            <article class="card">
-              <span class="tag">
-                MDS service
-              </span>
-              <h3>
-                Digital marketing &amp; growth
-              </h3>
-              <p>
-                We help businesses reach the right audience through purposeful content, social media, campaigns, advertising, and measurable online growth.
-              </p>
-            </article>
-            <article class="card">
-              <span class="tag">
-                MDS service
-              </span>
-              <h3>
-                Implementation &amp; support
-              </h3>
-              <p>
-                From setup and launch to training, support, and ongoing improvements, we stay involved so each solution keeps delivering value.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-      <section class="section contact">
-        <div class="wrap">
-          <div class="contact-box">
-            <h2>
-              Ready to strengthen your business?
-            </h2>
-            <p>
-              Contact MDS to discuss VoltaLog, a tailored business system, your digital identity, website, online presence, or digital marketing needs.
-            </p>
-            <div class="actions">
-              <a class="button primary" href="mailto:mds@mdslb.com">
-                mds@mdslb.com
-              </a>
-              <a class="button secondary" href="tel:+96176063312">
-                +961 76 06 33 12
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <div class="wrap footer">
-        <strong>
-          Murex Digital Solutions
-        </strong>
-        <span>
-          Technology & business software solutions.
-        </span>
-      </div>
-    </footer>
-  </body>
+    </section>
+    <section id="solutions"><div class="wrap"><div class="head"><span class="kicker">What we do</span><h2>One partner for your operational and digital needs.</h2><p>We combine practical technology with a clear online presence so your business can work more efficiently and present itself professionally.</p></div><div class="grid">
+      <article class="card"><div class="icon">▣</div><h3>Business software</h3><p>Focused applications for billing, customer records, payments, reporting and daily operations.</p><a class="card-link" href="voltalog/">Meet VoltaLog →</a></article>
+      <article class="card"><div class="icon">⌘</div><h3>Tailored systems</h3><p>Custom digital tools and workflows designed around the way your organization actually works.</p><a class="card-link" href="#contact">Discuss your workflow →</a></article>
+      <article class="card"><div class="icon">◇</div><h3>Websites & identity</h3><p>Brand direction, responsive websites, professional messaging and a consistent digital presence.</p><a class="card-link" href="#contact">Build your presence →</a></article>
+      <article class="card"><div class="icon">↗</div><h3>Digital growth</h3><p>Purposeful content, social media setup, campaigns and measurable digital marketing.</p><a class="card-link" href="#contact">Plan your growth →</a></article>
+      <article class="card"><div class="icon">✓</div><h3>Implementation</h3><p>Configuration, data preparation, launch assistance and practical training for your team.</p><a class="card-link" href="#contact">Plan an implementation →</a></article>
+      <article class="card"><div class="icon">◉</div><h3>Local support</h3><p>Ongoing assistance and improvements to keep your solution useful as your business evolves.</p><a class="card-link" href="#contact">Contact support →</a></article>
+    </div></div></section>
+    <section class="product" id="voltalog"><div class="wrap product-grid"><div><div class="head"><span class="kicker">Featured product</span><h2>VoltaLog: generator billing without Excel chaos.</h2><p>A Windows application that keeps customers, readings, tariffs, invoices, receipts, payments, reports and backups connected.</p></div><div class="checks"><span>Works locally without permanent internet</span><span>Designed around generator-office workflows</span><span>Professional invoices, receipts and reporting</span><span>Installation, training and local support</span></div><div class="actions"><a class="button primary" href="voltalog/">Explore VoltaLog</a><a class="button outline" href="https://wa.me/96176063312?text=Hello%20MDS%2C%20I%20would%20like%20a%20VoltaLog%20demo." target="_blank" rel="noopener">Request a demo</a></div></div><a class="product-shot" href="assets/db.png" target="_blank" rel="noopener"><img src="assets/db.png" alt="VoltaLog generator billing dashboard"></a></div></section>
+    <section class="process"><div class="wrap"><div class="head"><span class="kicker" style="color:#f4d27a">How we work</span><h2>A clear path from idea to useful result.</h2><p>Every engagement begins with the real business need—not with a predetermined tool.</p></div><div class="steps"><article class="step"><b>1</b><h3>Understand</h3><p>We examine your goals, workflow and current difficulties.</p></article><article class="step"><b>2</b><h3>Plan</h3><p>We define the right solution, scope and implementation path.</p></article><article class="step"><b>3</b><h3>Deliver</h3><p>We build, configure, test and prepare the solution for launch.</p></article><article class="step"><b>4</b><h3>Support</h3><p>We train users, assist adoption and continue improving.</p></article></div></div></section>
+    <section><div class="wrap"><div class="head"><span class="kicker">Why MDS</span><h2>Technology grounded in real business work.</h2></div><div class="trust-grid"><div class="trust-item"><strong>Practical first</strong><span>Solutions focused on measurable daily value.</span></div><div class="trust-item"><strong>Built locally</strong><span>Designed and supported for businesses in Lebanon.</span></div><div class="trust-item"><strong>Clear ownership</strong><span>Your business data and needs remain central.</span></div><div class="trust-item"><strong>Long-term support</strong><span>Help from setup through ongoing improvements.</span></div></div></div></section>
+    <section class="about" id="about"><div class="wrap about-grid"><div class="head"><span class="kicker">About MDS</span><h2>Business understanding, backed by technology.</h2></div><div class="about-copy">Murex Digital Solutions develops practical software and digital foundations for businesses that want to operate better and grow with confidence. We bring together business analysis, software development, implementation, websites, brand identity and digital communication under one roof.<br><br>Our approach is direct: understand the real workflow, choose technology that fits it, deliver clearly and remain available after launch.</div></div></section>
+    <section id="contact"><div class="wrap"><div class="contact-box"><h2>Let’s strengthen your business.</h2><p>Tell us about the workflow you want to improve, the software you need, or the digital presence you want to build.</p><div class="actions"><a class="button primary" href="https://wa.me/96176063312?text=Hello%20MDS%2C%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener">WhatsApp MDS</a><a class="button secondary" href="mailto:mds@mdslb.com?subject=MDS%20Project%20Inquiry">Email MDS</a><a class="button secondary" href="tel:+96176063312">Call +961 76 06 33 12</a></div><div class="contact-details"><a href="mailto:mds@mdslb.com">mds@mdslb.com</a><span>Lebanon</span></div></div></div></section>
+  </main>
+  <a class="whatsapp" href="https://wa.me/96176063312?text=Hello%20MDS%2C%20I%20would%20like%20more%20information." target="_blank" rel="noopener" aria-label="Contact MDS on WhatsApp">WhatsApp</a>
+  <footer><div class="wrap footer"><div><strong>Murex Digital Solutions</strong><br><small>Technology & business solutions · Lebanon</small></div><div class="footer-links"><a href="voltalog/">VoltaLog</a><a href="ar/" lang="ar">العربية</a><a href="mailto:mds@mdslb.com">Contact</a></div><span>© 2026 MDS</span></div></footer>
+</body>
 </html>
