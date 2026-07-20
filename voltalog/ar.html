@@ -8,6 +8,7 @@
     </title>
     <meta name="description" content="VoltaLog by MDS برنامج ويندوز لإدارة اشتراكات المولدات والقراءات والفواتير والإيصالات والمدفوعات والتقارير.">
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap') screen and (min-width:681px);
       :root {
         --ink:#132326;
         --muted:#52656a;
@@ -401,6 +402,11 @@
       .footer-inner {
         display:flex;
         justify-content:space-between
+      }
+      @media(min-width:681px) {
+        body {
+          font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif
+        }
       }
       @media(max-width:900px) {
         .hero-grid,.trust,.grid3,.grid5,.example-grid {
