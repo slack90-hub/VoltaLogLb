@@ -17,7 +17,8 @@
         --gold:#e2aa2f;
         --cream:#faf7ef;
         --navy:#10272c;
-        --soft:#eef4f3
+        --soft:#eef4f3;
+        --header-scale:2
       }
       * {
         box-sizing:border-box
@@ -41,17 +42,18 @@
       .topbar {
         position:sticky;
         top:0;
-        z-index:20;
+        z-index:30;
         background:rgba(19,35,38,.96);
         backdrop-filter:blur(14px)
       }
       .nav {
-        min-height:76px;
+        min-height:calc(76px * var(--header-scale));
         display:flex;
         align-items:center;
         justify-content:space-between;
         color:#fff;
-        gap:18px
+        gap:18px;
+        transition:min-height .12s ease-out
       }
       .brand {
         display:flex;
@@ -60,9 +62,11 @@
         text-decoration:none
       }
       .brand-logo {
-        width:64px;
-        height:64px;
-        object-fit:contain
+        width:calc(64px * var(--header-scale));
+        height:calc(64px * var(--header-scale));
+        object-fit:contain;
+        filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));
+        transition:width .12s ease-out,height .12s ease-out
       }
       .brand-text {
         display:grid
@@ -464,6 +468,10 @@
         }
       }
       @media(max-width:680px) {
+        .brand-logo {
+          width:calc(54px * var(--header-scale));
+          height:calc(54px * var(--header-scale))
+        }
         .nav-links a:not(.lang):not(.nav-cta) {
           display:none
         }
@@ -1048,6 +1056,21 @@
         start()
       }
       )();
+      (()=>{
+        const root=document.documentElement;
+        let waiting=false;
+        const updateHeaderScale=()=>{
+          root.style.setProperty('--header-scale',(2-Math.min(window.scrollY/280,1)).toFixed(3));
+          waiting=false;
+        };
+        window.addEventListener('scroll',()=>{
+          if(!waiting){
+            requestAnimationFrame(updateHeaderScale);
+            waiting=true;
+          }
+        },{passive:true});
+        updateHeaderScale();
+      })();
     </script>
   </body>
 </html>
