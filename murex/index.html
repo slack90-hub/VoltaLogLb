@@ -114,6 +114,21 @@
       filter: blur(16px);
     }
 
+    .date-stamp {
+      position: fixed;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      z-index: 3;
+      margin: 0;
+      color: rgba(255, 255, 255, .62);
+      font-size: clamp(.62rem, 1.3vw, .78rem);
+      font-weight: 500;
+      letter-spacing: .08em;
+      white-space: nowrap;
+      animation: fade-in 1.2s ease 2.2s both;
+      pointer-events: none;
+    }
+
     .hint {
       position: fixed;
       left: 50%;
@@ -158,7 +173,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .number, .halo, .hint { animation: none; }
+      .number, .halo, .hint, .date-stamp { animation: none; }
       .hint { display: none; }
     }
   </style>
@@ -170,6 +185,7 @@
     <h1 class="number">2707</h1>
   </main>
   <p class="hint">Tap anywhere for fireworks</p>
+  <p class="date-stamp">27 jun @ 0:00</p>
 
   <script>
     (() => {
