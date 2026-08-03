@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action https://formsubmit.co; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <meta name="theme-color" content="#132526">
+  <title>Private Note</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #152829;
+      --muted: #667675;
+      --deep: #132526;
+      --teal: #315f5c;
+      --gold: #d7a84a;
+      --cream: #f7f2e9;
+      --paper: rgba(255, 253, 248, .94);
+      --line: rgba(21, 40, 41, .14);
+      --danger: #6f3e3e;
+      --shadow: 0 26px 80px rgba(14, 34, 35, .2);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--deep); }
+    body {
+      min-height: 100svh;
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(215, 168, 74, .2), transparent 34%),
+        radial-gradient(circle at 88% 82%, rgba(77, 133, 128, .2), transparent 38%),
+        linear-gradient(145deg, #102122 0%, #1d3c3d 52%, #102122 100%);
+      display: grid;
+      place-items: center;
+      padding: max(20px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+    }
+
+    .page { width: min(100%, 570px); }
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 0 2px 14px;
+      color: rgba(255, 255, 255, .66);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .mark { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; }
+    .mark::before {
+      content: "M";
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 50%;
+      color: #f3d68b;
+      font: 700 14px Georgia, serif;
+    }
+
+    .exit {
+      appearance: none;
+      border: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .34);
+      padding: 5px 0;
+      background: none;
+      color: rgba(255, 255, 255, .78);
+      font: inherit;
+      letter-spacing: .04em;
+      cursor: pointer;
+    }
+    .exit:hover, .exit:focus-visible { color: #fff; border-color: #fff; }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(26px, 6vw, 48px);
+      border: 1px solid rgba(255, 255, 255, .52);
+      border-radius: 28px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .eyebrow {
+      margin: 0 0 11px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 430px;
+      margin: 0;
+      font: 500 clamp(34px, 9vw, 53px)/1.03 Georgia, "Times New Roman", serif;
+      letter-spacing: -.04em;
+    }
+    .intro {
+      max-width: 450px;
+      margin: 18px 0 28px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    label { display: block; margin-bottom: 9px; font-size: 14px; font-weight: 750; }
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 184px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 17px;
+      outline: none;
+      background: rgba(255, 255, 255, .72);
+      color: var(--ink);
+      font: 16px/1.55 inherit;
+      transition: border-color .18s, box-shadow .18s, background .18s;
+    }
+    textarea::placeholder { color: #8b9997; }
+    textarea:focus {
+      border-color: var(--teal);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(49, 95, 92, .12);
+    }
+
+    .attachment { margin-top: 15px; }
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0;
+      padding: 9px 12px;
+      border: 1px dashed rgba(49, 95, 92, .35);
+      border-radius: 11px;
+      color: var(--teal);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .file-label:hover { background: rgba(49, 95, 92, .06); }
+    .file-label input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .file-name { margin: 8px 2px 0; color: var(--muted); font-size: 12px; }
+
+    .actions { display: flex; align-items: center; gap: 15px; margin-top: 22px; }
+    .send {
+      min-height: 50px;
+      flex: 1;
+      border: 0;
+      border-radius: 14px;
+      padding: 0 22px;
+      background: var(--deep);
+      color: #fff;
+      font: 800 15px inherit;
+      letter-spacing: .01em;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(19, 37, 38, .18);
+      transition: transform .16s, background .16s, box-shadow .16s;
+    }
+    .send:hover { transform: translateY(-1px); background: var(--teal); box-shadow: 0 15px 28px rgba(19, 37, 38, .23); }
+    .send:active { transform: translateY(0); }
+    .send:focus-visible, .file-label:focus-within { outline: 3px solid rgba(215, 168, 74, .55); outline-offset: 3px; }
+    .note { margin: 18px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; text-align: center; }
+    .honey { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+    @media (max-width: 520px) {
+      body { align-items: start; padding-left: 13px; padding-right: 13px; }
+      .card { border-radius: 22px; }
+      .topline { margin-top: 2px; }
+      textarea { min-height: 170px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topline">
+      <span class="mark">Private note</span>
+      <button class="exit" id="quickExit" type="button" aria-label="Leave this page">Quick exit</button>
+    </div>
+
+    <section class="card" aria-labelledby="pageTitle">
+      <p class="eyebrow">This space is yours</p>
+      <h1 id="pageTitle">Leave a note, whenever you want.</h1>
+      <p class="intro">Write as much or as little as you like. There is no pressure to explain, and no expectation of an immediate reply.</p>
+
+      <form action="https://formsubmit.co/mds@mdslb.com" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" value="A private note from Murex">
+        <input type="hidden" name="_next" value="https://mdslb.com/murex/sent.html">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="source" value="Private Murex page">
+        <div class="honey" aria-hidden="true">
+          <label for="company">Company</label>
+          <input id="company" type="text" name="_honey" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label for="message">Your note</label>
+        <textarea id="message" name="message" maxlength="5000" placeholder="Write here…" required></textarea>
+
+        <div class="attachment">
+          <label class="file-label">
+            <span aria-hidden="true">＋</span>
+            <span>Add a photo or file (optional)</span>
+            <input id="attachment" type="file" name="attachment" accept="image/*,audio/*,.pdf,.txt">
+          </label>
+          <p class="file-name" id="fileName" aria-live="polite"></p>
+        </div>
+
+        <div class="actions">
+          <button class="send" type="submit">Send privately</button>
+        </div>
+        <p class="note">Your note is delivered by email. This page does not use analytics or tracking.</p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const attachment = document.getElementById('attachment');
+      const fileName = document.getElementById('fileName');
+      const quickExit = document.getElementById('quickExit');
+
+      attachment.addEventListener('change', () => {
+        fileName.textContent = attachment.files.length ? attachment.files[0].name : '';
+      });
+
+      quickExit.addEventListener('click', () => {
+        window.location.replace('https://mdslb.com/');
+      });
+    })();
+  </script>
+</body>
+</html>
