@@ -36,11 +36,11 @@ jobs:
       - name: Prepare public site
         run: |
           mkdir -p _site
-          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude '_site/' --exclude 'murex/' ./ _site/
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude '_site/' ./ _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the public site only; keep the private Murex page out.
+          # Upload the complete static site.
           path: './_site'
       - name: Deploy to GitHub Pages
         id: deployment
