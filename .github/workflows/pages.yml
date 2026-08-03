@@ -33,7 +33,7 @@ jobs:
       - name: Prepare public site
         run: |
           mkdir -p _site
-          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude '_site/' --exclude 'murex/' ./ _site/
+          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude '_site/' ./ _site/
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
