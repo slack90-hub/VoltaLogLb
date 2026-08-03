@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action https://formsubmit.co; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; form-action 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
   <meta name="theme-color" content="#132526">
-  <title>Private Note</title>
+  <title>Our Notes</title>
   <style>
     :root {
       color-scheme: light;
@@ -14,12 +14,14 @@
       --muted: #667675;
       --deep: #132526;
       --teal: #315f5c;
+      --teal-soft: #e3efec;
       --gold: #d7a84a;
       --cream: #f7f2e9;
-      --paper: rgba(255, 253, 248, .94);
+      --paper: rgba(255, 253, 248, .96);
       --line: rgba(21, 40, 41, .14);
-      --danger: #6f3e3e;
-      --shadow: 0 26px 80px rgba(14, 34, 35, .2);
+      --maria: #f2e3d6;
+      --danger: #854d4d;
+      --shadow: 0 26px 80px rgba(14, 34, 35, .22);
     }
 
     * { box-sizing: border-box; }
@@ -30,24 +32,24 @@
       font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 18% 12%, rgba(215, 168, 74, .2), transparent 34%),
-        radial-gradient(circle at 88% 82%, rgba(77, 133, 128, .2), transparent 38%),
+        radial-gradient(circle at 16% 9%, rgba(215, 168, 74, .20), transparent 32%),
+        radial-gradient(circle at 88% 82%, rgba(77, 133, 128, .23), transparent 38%),
         linear-gradient(145deg, #102122 0%, #1d3c3d 52%, #102122 100%);
-      display: grid;
-      place-items: center;
-      padding: max(20px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+      padding: max(18px, env(safe-area-inset-top)) 14px max(22px, env(safe-area-inset-bottom));
     }
 
-    .page { width: min(100%, 570px); }
+    button, textarea, select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    .page { width: min(100%, 720px); margin: 0 auto; }
     .topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      margin: 0 2px 14px;
-      color: rgba(255, 255, 255, .66);
+      margin: 0 4px 14px;
+      color: rgba(255, 255, 255, .70);
       font-size: 12px;
-      letter-spacing: .12em;
+      letter-spacing: .11em;
       text-transform: uppercase;
     }
     .mark { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; }
@@ -62,16 +64,12 @@
       color: #f3d68b;
       font: 700 14px Georgia, serif;
     }
-
     .exit {
-      appearance: none;
       border: 0;
       border-bottom: 1px solid rgba(255, 255, 255, .34);
       padding: 5px 0;
       background: none;
-      color: rgba(255, 255, 255, .78);
-      font: inherit;
-      letter-spacing: .04em;
+      color: rgba(255, 255, 255, .80);
       cursor: pointer;
     }
     .exit:hover, .exit:focus-visible { color: #fff; border-color: #fff; }
@@ -79,9 +77,8 @@
     .card {
       position: relative;
       overflow: hidden;
-      padding: clamp(26px, 6vw, 48px);
       border: 1px solid rgba(255, 255, 255, .52);
-      border-radius: 28px;
+      border-radius: 26px;
       background: var(--paper);
       box-shadow: var(--shadow);
       backdrop-filter: blur(20px);
@@ -93,9 +90,9 @@
       height: 4px;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
-
+    .hero { padding: clamp(26px, 6vw, 44px) clamp(22px, 6vw, 44px) 22px; }
     .eyebrow {
-      margin: 0 0 11px;
+      margin: 0 0 9px;
       color: var(--teal);
       font-size: 12px;
       font-weight: 850;
@@ -103,84 +100,96 @@
       text-transform: uppercase;
     }
     h1 {
-      max-width: 430px;
       margin: 0;
-      font: 500 clamp(34px, 9vw, 53px)/1.03 Georgia, "Times New Roman", serif;
+      font: 500 clamp(34px, 8vw, 52px)/1.04 Georgia, "Times New Roman", serif;
       letter-spacing: -.04em;
     }
-    .intro {
-      max-width: 450px;
-      margin: 18px 0 28px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.7;
-    }
+    .intro { margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
 
-    label { display: block; margin-bottom: 9px; font-size: 14px; font-weight: 750; }
+    .conversation {
+      min-height: 230px;
+      max-height: min(48svh, 520px);
+      overflow-y: auto;
+      padding: 20px clamp(18px, 5vw, 36px);
+      border-block: 1px solid var(--line);
+      background: rgba(236, 235, 225, .50);
+      scroll-behavior: smooth;
+    }
+    .empty { max-width: 390px; margin: 55px auto; color: var(--muted); text-align: center; line-height: 1.65; }
+    .loading { opacity: .72; }
+    .note-row { display: flex; margin: 0 0 14px; }
+    .note-row[data-author="Nad"] { justify-content: flex-end; }
+    .bubble {
+      max-width: min(84%, 510px);
+      padding: 12px 15px 9px;
+      border: 1px solid rgba(21, 40, 41, .08);
+      border-radius: 17px 17px 17px 5px;
+      background: var(--maria);
+      box-shadow: 0 5px 14px rgba(19, 37, 38, .07);
+    }
+    .note-row[data-author="Nad"] .bubble {
+      border-radius: 17px 17px 5px 17px;
+      background: var(--teal-soft);
+    }
+    .author { margin: 0 0 5px; color: var(--teal); font-size: 12px; font-weight: 800; }
+    .message { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 15px; line-height: 1.5; }
+    .time { display: block; margin-top: 6px; color: var(--muted); font-size: 10px; text-align: right; }
+
+    .composer { padding: 20px clamp(20px, 6vw, 44px) clamp(24px, 5vw, 34px); }
+    .composer-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    label { font-size: 13px; font-weight: 750; }
+    select {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0 30px 0 11px;
+      background: #fff;
+      color: var(--ink);
+    }
     textarea {
       display: block;
       width: 100%;
-      min-height: 184px;
+      min-height: 112px;
       resize: vertical;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px 17px;
+      border-radius: 15px;
+      padding: 14px 15px;
       outline: none;
-      background: rgba(255, 255, 255, .72);
+      background: rgba(255, 255, 255, .82);
       color: var(--ink);
-      font: 16px/1.55 inherit;
-      transition: border-color .18s, box-shadow .18s, background .18s;
+      font-size: 16px;
+      line-height: 1.5;
+      transition: border-color .18s, box-shadow .18s;
     }
+    textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(49, 95, 92, .12); }
     textarea::placeholder { color: #8b9997; }
-    textarea:focus {
-      border-color: var(--teal);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(49, 95, 92, .12);
-    }
-
-    .attachment { margin-top: 15px; }
-    .file-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin: 0;
-      padding: 9px 12px;
-      border: 1px dashed rgba(49, 95, 92, .35);
-      border-radius: 11px;
-      color: var(--teal);
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .file-label:hover { background: rgba(49, 95, 92, .06); }
-    .file-label input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-    .file-name { margin: 8px 2px 0; color: var(--muted); font-size: 12px; }
-
-    .actions { display: flex; align-items: center; gap: 15px; margin-top: 22px; }
+    .actions { display: flex; align-items: center; gap: 13px; margin-top: 13px; }
     .send {
-      min-height: 50px;
+      min-height: 48px;
       flex: 1;
       border: 0;
-      border-radius: 14px;
-      padding: 0 22px;
+      border-radius: 13px;
+      padding: 0 20px;
       background: var(--deep);
       color: #fff;
-      font: 800 15px inherit;
-      letter-spacing: .01em;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 12px 24px rgba(19, 37, 38, .18);
-      transition: transform .16s, background .16s, box-shadow .16s;
+      box-shadow: 0 10px 20px rgba(19, 37, 38, .18);
     }
-    .send:hover { transform: translateY(-1px); background: var(--teal); box-shadow: 0 15px 28px rgba(19, 37, 38, .23); }
-    .send:active { transform: translateY(0); }
-    .send:focus-visible, .file-label:focus-within { outline: 3px solid rgba(215, 168, 74, .55); outline-offset: 3px; }
-    .note { margin: 18px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; text-align: center; }
-    .honey { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+    .send:hover { background: var(--teal); }
+    .send:disabled { cursor: wait; opacity: .58; }
+    .refresh { border: 0; padding: 9px 2px; background: none; color: var(--teal); font-size: 13px; font-weight: 750; cursor: pointer; }
+    .status { min-height: 18px; margin: 10px 2px 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .status.error { color: var(--danger); }
+    .privacy { margin: 15px 5px 0; color: rgba(255, 255, 255, .57); font-size: 11px; line-height: 1.55; text-align: center; }
 
     @media (max-width: 520px) {
-      body { align-items: start; padding-left: 13px; padding-right: 13px; }
-      .card { border-radius: 22px; }
-      .topline { margin-top: 2px; }
-      textarea { min-height: 170px; }
+      .card { border-radius: 21px; }
+      .hero { padding-top: 27px; }
+      .conversation { max-height: 46svh; }
+      .bubble { max-width: 91%; }
+      .composer-top { align-items: flex-start; flex-direction: column; }
+      select { width: 100%; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
@@ -190,59 +199,178 @@
 <body>
   <main class="page">
     <div class="topline">
-      <span class="mark">Private note</span>
+      <span class="mark">Our private space</span>
       <button class="exit" id="quickExit" type="button" aria-label="Leave this page">Quick exit</button>
     </div>
 
     <section class="card" aria-labelledby="pageTitle">
-      <p class="eyebrow">This space is yours</p>
-      <h1 id="pageTitle">Leave a note, whenever you want.</h1>
-      <p class="intro">Write as much or as little as you like. There is no pressure to explain, and no expectation of an immediate reply.</p>
+      <header class="hero">
+        <p class="eyebrow">Nad &amp; Maria</p>
+        <h1 id="pageTitle">A quiet place for us.</h1>
+        <p class="intro">Leave a note whenever you want. It will stay here so we can both read it later—no email and no pressure for an immediate reply.</p>
+      </header>
 
-      <form action="https://formsubmit.co/mds@mdslb.com" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_subject" value="A private note from Murex">
-        <input type="hidden" name="_next" value="https://mdslb.com/murex/sent.html">
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="source" value="Private Murex page">
-        <div class="honey" aria-hidden="true">
-          <label for="company">Company</label>
-          <input id="company" type="text" name="_honey" tabindex="-1" autocomplete="off">
+      <div class="conversation" id="conversation" aria-live="polite" aria-busy="true">
+        <p class="empty loading">Loading our notes…</p>
+      </div>
+
+      <form class="composer" id="noteForm">
+        <div class="composer-top">
+          <label for="author">Who is writing?</label>
+          <select id="author" name="author" required>
+            <option value="">Choose your name</option>
+            <option value="Nad">Nad</option>
+            <option value="Maria">Maria</option>
+          </select>
         </div>
-
         <label for="message">Your note</label>
         <textarea id="message" name="message" maxlength="5000" placeholder="Write here…" required></textarea>
-
-        <div class="attachment">
-          <label class="file-label">
-            <span aria-hidden="true">＋</span>
-            <span>Add a photo or file (optional)</span>
-            <input id="attachment" type="file" name="attachment" accept="image/*,audio/*,.pdf,.txt">
-          </label>
-          <p class="file-name" id="fileName" aria-live="polite"></p>
-        </div>
-
         <div class="actions">
-          <button class="send" type="submit">Send privately</button>
+          <button class="send" id="sendButton" type="submit">Leave note</button>
+          <button class="refresh" id="refreshButton" type="button">Refresh</button>
         </div>
-        <p class="note">Your note is delivered by email. This page does not use analytics or tracking.</p>
+        <p class="status" id="status" role="status"></p>
       </form>
     </section>
+
+    <p class="privacy">Notes stay on this shared page and are not sent by email. The page has no analytics or tracking and is not listed on the MDS website.</p>
   </main>
 
   <script>
     (() => {
-      const attachment = document.getElementById('attachment');
-      const fileName = document.getElementById('fileName');
-      const quickExit = document.getElementById('quickExit');
+      const endpoint = './api/notes';
+      const conversation = document.getElementById('conversation');
+      const form = document.getElementById('noteForm');
+      const author = document.getElementById('author');
+      const message = document.getElementById('message');
+      const sendButton = document.getElementById('sendButton');
+      const refreshButton = document.getElementById('refreshButton');
+      const status = document.getElementById('status');
+      let newestId = 0;
 
-      attachment.addEventListener('change', () => {
-        fileName.textContent = attachment.files.length ? attachment.files[0].name : '';
+      const savedAuthor = localStorage.getItem('murex-note-author');
+      if (savedAuthor === 'Nad' || savedAuthor === 'Maria') author.value = savedAuthor;
+
+      function showStatus(text, isError = false) {
+        status.textContent = text;
+        status.classList.toggle('error', isError);
+      }
+
+      function formatTime(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        return new Intl.DateTimeFormat(undefined, {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        }).format(date);
+      }
+
+      function noteElement(note) {
+        const row = document.createElement('article');
+        row.className = 'note-row';
+        row.dataset.author = note.author;
+        row.dataset.id = String(note.id);
+
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+
+        const name = document.createElement('p');
+        name.className = 'author';
+        name.textContent = note.author;
+
+        const text = document.createElement('p');
+        text.className = 'message';
+        text.textContent = note.message;
+
+        const time = document.createElement('time');
+        time.className = 'time';
+        time.dateTime = note.created_at;
+        time.textContent = formatTime(note.created_at);
+
+        bubble.append(name, text, time);
+        row.append(bubble);
+        return row;
+      }
+
+      function render(notes) {
+        const ordered = [...notes].reverse();
+        conversation.replaceChildren();
+
+        if (!ordered.length) {
+          const empty = document.createElement('p');
+          empty.className = 'empty';
+          empty.textContent = 'No notes yet. The first words can be simple.';
+          conversation.append(empty);
+          newestId = 0;
+          return;
+        }
+
+        ordered.forEach(note => conversation.append(noteElement(note)));
+        newestId = Math.max(...ordered.map(note => Number(note.id) || 0));
+        conversation.scrollTop = conversation.scrollHeight;
+      }
+
+      async function loadNotes({ quiet = false } = {}) {
+        if (!quiet) showStatus('Loading notes…');
+        try {
+          const response = await fetch(endpoint, { headers: { accept: 'application/json' }, cache: 'no-store' });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.error || 'Notes could not be loaded.');
+
+          const incomingNewest = data.notes.length ? Math.max(...data.notes.map(note => Number(note.id) || 0)) : 0;
+          if (!quiet || incomingNewest !== newestId) render(data.notes);
+          if (!quiet) showStatus('Notes are up to date.');
+        } catch (error) {
+          if (!quiet) {
+            conversation.innerHTML = '<p class="empty">Our notes are temporarily unavailable.</p>';
+            showStatus(error.message || 'Notes could not be loaded.', true);
+          }
+        } finally {
+          conversation.setAttribute('aria-busy', 'false');
+        }
+      }
+
+      author.addEventListener('change', () => {
+        if (author.value) localStorage.setItem('murex-note-author', author.value);
       });
 
-      quickExit.addEventListener('click', () => {
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const selectedAuthor = author.value;
+        const noteText = message.value.trim();
+        if (!selectedAuthor || !noteText) {
+          showStatus('Choose your name and write a note first.', true);
+          return;
+        }
+
+        sendButton.disabled = true;
+        showStatus('Saving your note…');
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json', accept: 'application/json' },
+            body: JSON.stringify({ author: selectedAuthor, message: noteText })
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.error || 'Your note could not be saved.');
+
+          message.value = '';
+          showStatus('Your note is here.');
+          await loadNotes({ quiet: true });
+        } catch (error) {
+          showStatus(error.message || 'Your note could not be saved.', true);
+        } finally {
+          sendButton.disabled = false;
+        }
+      });
+
+      refreshButton.addEventListener('click', () => loadNotes());
+      document.getElementById('quickExit').addEventListener('click', () => {
         window.location.replace('https://mdslb.com/');
       });
+
+      loadNotes();
+      setInterval(() => loadNotes({ quiet: true }), 15000);
     })();
   </script>
 </body>
