@@ -3,246 +3,89 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action https://formsubmit.co; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
-  <meta name="theme-color" content="#132526">
-  <title>Private Note</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#060817">
+  <title>27 jul @ 0:00</title>
   <style>
-    :root {
-      color-scheme: light;
-      --ink: #152829;
-      --muted: #667675;
-      --deep: #132526;
-      --teal: #315f5c;
-      --gold: #d7a84a;
-      --cream: #f7f2e9;
-      --paper: rgba(255, 253, 248, .94);
-      --line: rgba(21, 40, 41, .14);
-      --danger: #6f3e3e;
-      --shadow: 0 26px 80px rgba(14, 34, 35, .2);
-    }
-
+    :root { color-scheme: dark; --warm: #fff4df; }
     * { box-sizing: border-box; }
-    html { min-height: 100%; background: var(--deep); }
-    body {
-      min-height: 100svh;
-      margin: 0;
-      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 18% 12%, rgba(215, 168, 74, .2), transparent 34%),
-        radial-gradient(circle at 88% 82%, rgba(77, 133, 128, .2), transparent 38%),
-        linear-gradient(145deg, #102122 0%, #1d3c3d 52%, #102122 100%);
-      display: grid;
-      place-items: center;
-      padding: max(20px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
-    }
-
-    .page { width: min(100%, 570px); }
-    .topline {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      margin: 0 2px 14px;
-      color: rgba(255, 255, 255, .66);
-      font-size: 12px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .mark { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; }
-    .mark::before {
-      content: "M";
-      display: grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      border: 1px solid rgba(255, 255, 255, .28);
-      border-radius: 50%;
-      color: #f3d68b;
-      font: 700 14px Georgia, serif;
-    }
-
-    .exit {
-      appearance: none;
-      border: 0;
-      border-bottom: 1px solid rgba(255, 255, 255, .34);
-      padding: 5px 0;
-      background: none;
-      color: rgba(255, 255, 255, .78);
-      font: inherit;
-      letter-spacing: .04em;
-      cursor: pointer;
-    }
-    .exit:hover, .exit:focus-visible { color: #fff; border-color: #fff; }
-
-    .card {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(26px, 6vw, 48px);
-      border: 1px solid rgba(255, 255, 255, .52);
-      border-radius: 28px;
-      background: var(--paper);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(20px);
-    }
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-
-    .eyebrow {
-      margin: 0 0 11px;
-      color: var(--teal);
-      font-size: 12px;
-      font-weight: 850;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      max-width: 430px;
-      margin: 0;
-      font: 500 clamp(34px, 9vw, 53px)/1.03 Georgia, "Times New Roman", serif;
-      letter-spacing: -.04em;
-    }
-    .intro {
-      max-width: 450px;
-      margin: 18px 0 28px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    label { display: block; margin-bottom: 9px; font-size: 14px; font-weight: 750; }
-    textarea {
-      display: block;
-      width: 100%;
-      min-height: 184px;
-      resize: vertical;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px 17px;
-      outline: none;
-      background: rgba(255, 255, 255, .72);
-      color: var(--ink);
-      font: 16px/1.55 inherit;
-      transition: border-color .18s, box-shadow .18s, background .18s;
-    }
-    textarea::placeholder { color: #8b9997; }
-    textarea:focus {
-      border-color: var(--teal);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(49, 95, 92, .12);
-    }
-
-    .attachment { margin-top: 15px; }
-    .file-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin: 0;
-      padding: 9px 12px;
-      border: 1px dashed rgba(49, 95, 92, .35);
-      border-radius: 11px;
-      color: var(--teal);
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .file-label:hover { background: rgba(49, 95, 92, .06); }
-    .file-label input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-    .file-name { margin: 8px 2px 0; color: var(--muted); font-size: 12px; }
-
-    .actions { display: flex; align-items: center; gap: 15px; margin-top: 22px; }
-    .send {
-      min-height: 50px;
-      flex: 1;
-      border: 0;
-      border-radius: 14px;
-      padding: 0 22px;
-      background: var(--deep);
-      color: #fff;
-      font: 800 15px inherit;
-      letter-spacing: .01em;
-      cursor: pointer;
-      box-shadow: 0 12px 24px rgba(19, 37, 38, .18);
-      transition: transform .16s, background .16s, box-shadow .16s;
-    }
-    .send:hover { transform: translateY(-1px); background: var(--teal); box-shadow: 0 15px 28px rgba(19, 37, 38, .23); }
-    .send:active { transform: translateY(0); }
-    .send:focus-visible, .file-label:focus-within { outline: 3px solid rgba(215, 168, 74, .55); outline-offset: 3px; }
-    .note { margin: 18px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; text-align: center; }
-    .honey { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-
-    @media (max-width: 520px) {
-      body { align-items: start; padding-left: 13px; padding-right: 13px; }
-      .card { border-radius: 22px; }
-      .topline { margin-top: 2px; }
-      textarea { min-height: 170px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
-    }
+    html, body { width: 100%; min-height: 100%; margin: 0; overflow: hidden; background: #060817; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .sky, canvas, .veil, .egg { position: fixed; inset: 0; }
+    .sky { z-index: 0; overflow: hidden; background: radial-gradient(ellipse at 50% 115%, #1c2045 0%, #0b1027 35%, #060817 73%); }
+    .sky::before, .sky::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+    .sky::before { opacity: .75; background-image: radial-gradient(circle at 11% 17%, #fff 0 1px, transparent 1.5px), radial-gradient(circle at 72% 24%, #cbd7ff 0 1px, transparent 1.5px), radial-gradient(circle at 87% 68%, #fff 0 1px, transparent 1.5px), radial-gradient(circle at 31% 74%, #fff 0 1px, transparent 1.5px); background-size: 240px 190px, 310px 270px, 280px 235px, 365px 310px; }
+    .sky::after { background: radial-gradient(ellipse at center, transparent 28%, rgba(0,0,0,.35) 100%); }
+    #fireworks { z-index: 1; width: 100%; height: 100%; touch-action: manipulation; }
+    .hero { position: fixed; z-index: 2; inset: 0; display: grid; place-items: center; pointer-events: none; padding: max(22px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left)); }
+    .number { display: flex; align-items: baseline; color: #fffaf0; font-size: clamp(7rem, 26vw, 25rem); font-weight: 800; line-height: .8; letter-spacing: -.095em; filter: drop-shadow(0 0 8px rgba(255,242,205,.9)) drop-shadow(0 0 30px rgba(255,153,96,.42)) drop-shadow(0 0 75px rgba(130,119,255,.24)); user-select: none; pointer-events: auto; }
+    .digit { appearance: none; display: block; margin: 0; padding: 0; border: 0; color: inherit; background: transparent; font: inherit; letter-spacing: inherit; line-height: inherit; cursor: default; text-shadow: 0 0 1px #fff; -webkit-tap-highlight-color: transparent; }
+    .digit:focus-visible { outline: 2px solid rgba(255,255,255,.7); outline-offset: .08em; border-radius: .08em; }
+    .date { position: fixed; z-index: 3; right: max(22px, calc(env(safe-area-inset-right) + 16px)); bottom: max(20px, calc(env(safe-area-inset-bottom) + 14px)); color: rgba(255,250,240,.76); font-size: clamp(.7rem, 2.4vw, .88rem); font-weight: 600; letter-spacing: .16em; text-transform: lowercase; text-shadow: 0 1px 12px #000; }
+    .veil { z-index: 4; opacity: 0; background: rgba(4,5,16,.58); backdrop-filter: blur(0); pointer-events: none; transition: opacity .7s ease, backdrop-filter .7s ease; }
+    .egg { z-index: 5; display: grid; place-items: center; padding: max(26px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(26px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); opacity: 0; pointer-events: none; transition: opacity .45s ease; }
+    .egg.open, .veil.open { opacity: 1; }
+    .veil.open { backdrop-filter: blur(10px); }
+    .egg.open { pointer-events: auto; }
+    .memory { position: relative; width: min(82vw, 390px); margin: 0; transform: translateY(16px) scale(.94); opacity: 0; transition: transform .75s cubic-bezier(.16,1,.3,1), opacity .55s ease; text-align: center; }
+    .egg.open .memory { transform: translateY(0) scale(1); opacity: 1; }
+    .memory::before { content: ""; position: absolute; z-index: -1; inset: -26px; background: radial-gradient(circle, rgba(255,151,154,.36), transparent 64%); filter: blur(12px); }
+    .frame { position: relative; overflow: hidden; aspect-ratio: 3 / 4; border: 1px solid rgba(255,236,200,.72); border-radius: 5px; padding: 9px; background: linear-gradient(135deg, #f8d99a, #fff7e9 42%, #b78350); box-shadow: 0 24px 75px rgba(0,0,0,.62), 0 0 34px rgba(255,170,146,.42); }
+    .frame img { display: block; width: 100%; height: 100%; border-radius: 2px; object-fit: cover; background: #291d28; }
+    .fallback { display: none; height: 100%; place-items: center; border-radius: 2px; background: radial-gradient(circle at 50% 32%, #75455b, #221724 70%); color: rgba(255,242,220,.82); font: italic 1.1rem Georgia, serif; }
+    .message { margin: 21px 0 0; color: var(--warm); font: 400 clamp(1rem, 4vw, 1.2rem)/1.35 Georgia, "Times New Roman", serif; letter-spacing: .01em; text-shadow: 0 2px 14px #000; }
+    .float { position: absolute; color: #ffd8dc; opacity: 0; font-size: 1rem; animation: float 4s ease-in-out infinite; }
+    .float:nth-of-type(2) { top: 11%; left: -15%; animation-delay: -1.2s; color: #ffe29b; }
+    .float:nth-of-type(3) { top: 51%; right: -16%; animation-delay: -2.5s; color: #fff; }
+    @keyframes float { 0%,100% { transform: translateY(5px) scale(.75); opacity: .15; } 50% { transform: translateY(-16px) scale(1.1); opacity: .88; } }
+    @media (max-width: 480px) { .number { font-size: clamp(6.4rem, 31vw, 11rem); } .frame { padding: 7px; } .memory { width: min(78vw, 340px); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } .veil, .egg, .memory { transition-duration: .12s; } }
   </style>
 </head>
 <body>
-  <main class="page">
-    <div class="topline">
-      <span class="mark">Private note</span>
-      <button class="exit" id="quickExit" type="button" aria-label="Leave this page">Quick exit</button>
-    </div>
-
-    <section class="card" aria-labelledby="pageTitle">
-      <p class="eyebrow">This space is yours</p>
-      <h1 id="pageTitle">Leave a note, whenever you want.</h1>
-      <p class="intro">Write as much or as little as you like. There is no pressure to explain, and no expectation of an immediate reply.</p>
-
-      <form action="https://formsubmit.co/mds@mdslb.com" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_subject" value="A private note from Murex">
-        <input type="hidden" name="_next" value="https://mdslb.com/murex/sent.html">
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="source" value="Private Murex page">
-        <div class="honey" aria-hidden="true">
-          <label for="company">Company</label>
-          <input id="company" type="text" name="_honey" tabindex="-1" autocomplete="off">
-        </div>
-
-        <label for="message">Your note</label>
-        <textarea id="message" name="message" maxlength="5000" placeholder="Write here…" required></textarea>
-
-        <div class="attachment">
-          <label class="file-label">
-            <span aria-hidden="true">＋</span>
-            <span>Add a photo or file (optional)</span>
-            <input id="attachment" type="file" name="attachment" accept="image/*,audio/*,.pdf,.txt">
-          </label>
-          <p class="file-name" id="fileName" aria-live="polite"></p>
-        </div>
-
-        <div class="actions">
-          <button class="send" type="submit">Send privately</button>
-        </div>
-        <p class="note">Your note is delivered by email. This page does not use analytics or tracking.</p>
-      </form>
-    </section>
+  <div class="sky" aria-hidden="true"></div>
+  <canvas id="fireworks" aria-hidden="true"></canvas>
+  <main class="hero" aria-label="Celebration">
+    <div class="number" aria-label="2717"><button class="digit" type="button" aria-label="Digit 2">2</button><button class="digit" type="button" aria-label="Digit 7">7</button><button class="digit" type="button" aria-label="Digit 1">1</button><button class="digit" type="button" aria-label="Digit 7">7</button></div>
   </main>
-
+  <time class="date">27 jul @ 0:00</time>
+  <div class="veil" id="veil" aria-hidden="true"></div>
+  <section class="egg" id="egg" role="dialog" aria-modal="true" aria-label="A special memory" aria-hidden="true">
+    <figure class="memory" tabindex="-1">
+      <span class="float" aria-hidden="true">♥</span><span class="float" aria-hidden="true">✦</span><span class="float" aria-hidden="true">♥</span>
+      <div class="frame"><img id="memoryPhoto" alt="A cherished memory" decoding="async"><div class="fallback" id="photoFallback">A cherished memory</div></div>
+      <figcaption class="message">Some dates are more than numbers ❤️</figcaption>
+    </figure>
+  </section>
   <script>
     (() => {
-      const attachment = document.getElementById('attachment');
-      const fileName = document.getElementById('fileName');
-      const quickExit = document.getElementById('quickExit');
-
-      attachment.addEventListener('change', () => {
-        fileName.textContent = attachment.files.length ? attachment.files[0].name : '';
-      });
-
-      quickExit.addEventListener('click', () => {
-        window.location.replace('https://mdslb.com/');
-      });
+      const canvas = document.getElementById('fireworks'), ctx = canvas.getContext('2d');
+      const digits = [...document.querySelectorAll('.digit')], egg = document.getElementById('egg'), veil = document.getElementById('veil');
+      const photo = document.getElementById('memoryPhoto'), fallback = document.getElementById('photoFallback'), memory = egg.querySelector('.memory');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let width, height, scale, particles = [], rockets = [], last = 0, nextAuto = 0, hidden = document.hidden, open = false, sequence = [], sequenceAt = 0, lastTap = 0, closeTimer, previousFocus;
+      const colors = ['#ff536b', '#ff9c3e', '#ffe18a', '#85d9ff', '#b99cff', '#70f1c3', '#ff79c5'];
+      const resize = () => { scale = Math.min(devicePixelRatio || 1, 1.8); width = innerWidth; height = innerHeight; canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale); ctx.setTransform(scale, 0, 0, scale, 0, 0); };
+      addEventListener('resize', resize, { passive: true }); resize();
+      const burst = (x, y, palette = colors, count = reduce ? 24 : 70, heart = false) => {
+        for (let i = 0; i < count; i++) { let a, speed; if (heart) { const t = (i / count) * Math.PI * 2; const hx = 16 * Math.sin(t) ** 3, hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)); a = Math.atan2(hy, hx); speed = Math.hypot(hx, hy) * 5; } else { a = Math.random() * Math.PI * 2; speed = 1.4 + Math.random() * 5.7; } particles.push({x,y,px:x,py:y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,color:palette[i%palette.length],life:1,decay:.010+Math.random()*.014,size:1+Math.random()*2.1}); }
+      };
+      const launch = (x = width * (.15 + Math.random()*.7), y = height * (.13 + Math.random()*.38), palette) => rockets.push({x, y: height + 12, targetY:y, vx:(Math.random()-.5)*.8, vy:-((height-y)/38), palette: palette || colors, trail:[]});
+      const special = () => { const palette = ['#ff496d','#e61f48','#ffd46e','#fff9e9']; const cx = width/2, cy = height*.42; [-.22,-.11,0,.11,.22].forEach((n,i) => setTimeout(() => { burst(cx+width*n, cy+Math.abs(n)*height*.25, palette, reduce?30:82, true); }, i*105)); };
+      const animate = (now) => { requestAnimationFrame(animate); const dt = Math.min(32, now-last || 16) / 16; last=now; if (hidden) return; ctx.fillStyle = 'rgba(6,8,23,.19)'; ctx.fillRect(0,0,width,height);
+        if (!open && !reduce && now > nextAuto) { launch(); nextAuto = now + 620 + Math.random()*940; }
+        rockets = rockets.filter(r => { r.trail.push([r.x,r.y]); if (r.trail.length>9) r.trail.shift(); r.x+=r.vx*dt; r.y+=r.vy*dt; ctx.strokeStyle='#fff5d6'; ctx.globalAlpha=.8; ctx.beginPath(); r.trail.forEach((p,i) => i ? ctx.lineTo(p[0],p[1]) : ctx.moveTo(p[0],p[1])); ctx.stroke(); ctx.globalAlpha=1; if(r.y<=r.targetY) { burst(r.x,r.y,r.palette); return false; } return true; });
+        particles = particles.filter(p => { p.px=p.x; p.py=p.y; p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=.055*dt; p.vx*=.99; p.life-=p.decay*dt; if(p.life<=0) return false; ctx.globalAlpha=Math.max(0,p.life); ctx.strokeStyle=p.color; ctx.lineWidth=p.size; ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke(); return true; }); ctx.globalAlpha=1;
+      }; requestAnimationFrame(animate);
+      canvas.addEventListener('pointerdown', e => { if (!open) launch(e.clientX, Math.max(60, e.clientY)); });
+      document.addEventListener('visibilitychange', () => { hidden = document.hidden; if (!hidden) { last = performance.now(); nextAuto = last + 300; } });
+      const reset = () => { sequence = []; sequenceAt = 0; };
+      const activate = digit => { const now = performance.now(); if (open || now-lastTap < 230) return; lastTap = now; if (sequenceAt && now-sequenceAt > 5000) reset(); const expected = ['2','7','1','7']; if (digit === expected[sequence.length]) { sequence.push(digit); sequenceAt=now; if (sequence.length === expected.length) reveal(); } else { sequence = digit === expected[0] ? [digit] : []; sequenceAt = sequence.length ? now : 0; } };
+      digits.forEach(button => button.addEventListener('click', e => { e.stopPropagation(); activate(button.textContent); }));
+      const reveal = () => { open=true; reset(); previousFocus=document.activeElement; egg.setAttribute('aria-hidden','false'); veil.setAttribute('aria-hidden','false'); photo.src='../assets/nad-maria.jpeg'; photo.onload=()=>{ photo.style.display='block'; fallback.style.display='none'; }; photo.onerror=()=>{ photo.removeAttribute('src'); photo.style.display='none'; fallback.style.display='grid'; }; veil.classList.add('open'); egg.classList.add('open'); memory.focus({preventScroll:true}); special(); closeTimer=setTimeout(close,10000); };
+      const close = () => { if(!open) return; open=false; clearTimeout(closeTimer); egg.classList.remove('open'); veil.classList.remove('open'); egg.setAttribute('aria-hidden','true'); veil.setAttribute('aria-hidden','true'); setTimeout(()=>photo.removeAttribute('src'),500); previousFocus?.focus?.({preventScroll:true}); };
+      egg.addEventListener('pointerdown', e => { if(e.target === egg) close(); });
+      document.addEventListener('keydown', e => { if (!open) return; if (e.key === 'Escape') { e.preventDefault(); close(); } else if (e.key === 'Tab') { e.preventDefault(); memory.focus({preventScroll:true}); } });
     })();
   </script>
 </body>
