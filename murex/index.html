@@ -19,7 +19,8 @@
     #fireworks { z-index: 1; width: 100%; height: 100%; touch-action: manipulation; }
     .hero { position: fixed; z-index: 2; inset: 0; display: grid; place-items: center; pointer-events: none; padding: max(22px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left)); }
     .number { display: flex; align-items: baseline; color: #fffaf0; font-size: clamp(7rem, 26vw, 25rem); font-weight: 800; line-height: .8; letter-spacing: -.095em; filter: drop-shadow(0 0 8px rgba(255,242,205,.9)) drop-shadow(0 0 30px rgba(255,153,96,.42)) drop-shadow(0 0 75px rgba(130,119,255,.24)); user-select: none; pointer-events: auto; }
-    .digit { appearance: none; display: block; margin: 0; padding: 0; border: 0; color: inherit; background: transparent; font: inherit; letter-spacing: inherit; line-height: inherit; cursor: default; text-shadow: 0 0 1px #fff; -webkit-tap-highlight-color: transparent; }
+    .digit { appearance: none; display: block; margin: 0; padding: 0; border: 0; color: inherit; background: transparent; font: inherit; letter-spacing: inherit; line-height: inherit; cursor: default; text-shadow: 0 0 1px #fff; transition: transform .16s ease, filter .16s ease; -webkit-tap-highlight-color: transparent; }
+    @media (hover: hover) { .digit:hover { transform: scale(1.07); filter: brightness(1.12); animation: digit-shake .28s ease-in-out; } }
     .digit:focus-visible { outline: 2px solid rgba(255,255,255,.7); outline-offset: .08em; border-radius: .08em; }
     .date { position: fixed; z-index: 3; right: max(22px, calc(env(safe-area-inset-right) + 16px)); bottom: max(20px, calc(env(safe-area-inset-bottom) + 14px)); color: rgba(255,250,240,.76); font-size: clamp(.7rem, 2.4vw, .88rem); font-weight: 600; letter-spacing: .16em; text-transform: lowercase; text-shadow: 0 1px 12px #000; }
     .veil { z-index: 4; opacity: 0; background: rgba(4,5,16,.58); backdrop-filter: blur(0); pointer-events: none; transition: opacity .7s ease, backdrop-filter .7s ease; }
@@ -38,6 +39,7 @@
     .float:nth-of-type(2) { top: 11%; left: -15%; animation-delay: -1.2s; color: #ffe29b; }
     .float:nth-of-type(3) { top: 51%; right: -16%; animation-delay: -2.5s; color: #fff; }
     @keyframes float { 0%,100% { transform: translateY(5px) scale(.75); opacity: .15; } 50% { transform: translateY(-16px) scale(1.1); opacity: .88; } }
+    @keyframes digit-shake { 0%,100% { transform: scale(1.07) translateX(0); } 25% { transform: scale(1.07) translateX(-.018em) rotate(-.6deg); } 75% { transform: scale(1.07) translateX(.018em) rotate(.6deg); } }
     @media (max-width: 480px) { .number { font-size: clamp(6.4rem, 31vw, 11rem); } .frame { padding: 7px; } .memory { width: min(78vw, 340px); } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } .veil, .egg, .memory { transition-duration: .12s; } }
   </style>
