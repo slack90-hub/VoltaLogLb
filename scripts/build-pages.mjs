@@ -12,7 +12,7 @@ const publicFiles = [
   "sitemap.xml",
 ];
 
-const publicDirectories = ["ar", "airborne", "assets", "voltalog"];
+const publicDirectories = ["ar", "airborne", "assets", "nexus", "voltalog"];
 
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(outputDirectory, { recursive: true });
