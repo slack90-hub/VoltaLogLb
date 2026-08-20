@@ -31,9 +31,7 @@ jobs:
           enablement: true
 
       - name: Prepare public site
-        run: |
-          mkdir -p _site
-          rsync -a --delete --exclude '.git/' --exclude '.github/' --exclude '_site/' ./ _site/
+        run: npm run build:pages
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

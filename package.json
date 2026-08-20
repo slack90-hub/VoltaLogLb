@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {
+    "build:pages": "node scripts/build-pages.mjs"
+  }
+}

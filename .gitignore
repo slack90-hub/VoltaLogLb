@@ -1,1 +1,5 @@
 # Keep ordinary local-only files out of the public website repository.
+/murex/
+/functions/
+/_site/
+/assets/nad-maria.jpeg
