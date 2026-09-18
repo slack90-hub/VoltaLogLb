@@ -43,7 +43,7 @@
     @keyframes digit-shake { 0%,100% { transform: scale(1.09) translateX(0); } 25% { transform: scale(1.09) translateX(-.018em) rotate(-.6deg); } 75% { transform: scale(1.09) translateX(.018em) rotate(.6deg); } }
     @media (max-width: 480px) { .number { font-size: clamp(5.7rem, 28vw, 10rem); } .frame { padding: 7px; } .memory { width: min(78vw, 340px); } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } .veil, .egg, .memory { transition-duration: .12s; } }
-  
+
     .egg { overflow-y: auto; }
     .egg:not(.open) { visibility: hidden; }
     .memory { width: min(86vw, 560px); }
@@ -75,6 +75,8 @@
       <figcaption class="message">Some dates are more than numbers ❤️</figcaption>
     </figure>
   </section>
+  <script src="tracking-config.js"></script>
+  <script src="tracking.js"></script>
   <script>
     (() => {
       const canvas = document.getElementById('fireworks'), ctx = canvas.getContext('2d');
@@ -104,8 +106,19 @@
       const counter = document.getElementById('photoCount');
       const previous = document.getElementById('previousPhoto'), next = document.getElementById('nextPhoto'), dismiss = document.getElementById('closeGallery');
       const frame = memory.querySelector('.frame');
-      let photoIndex = 0, swipeStart = null;
-      photo.onload = () => { photo.style.display = 'block'; fallback.style.display = 'none'; };
+      let photoIndex = 0, swipeStart = null, unlockId = null, openRecorded = false, revealReadyAt = 0;
+      const recordVisibleOpen = () => {
+        if (!open || openRecorded || !unlockId || document.hidden || !photo.complete || !photo.naturalWidth || photo.style.display === 'none') return;
+        const delay = revealReadyAt - performance.now();
+        if (delay > 0) { setTimeout(recordVisibleOpen, delay + 20); return; }
+        const currentUnlock = unlockId;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (!open || openRecorded || currentUnlock !== unlockId || document.hidden || !photo.complete || !photo.naturalWidth || photo.style.display === 'none') return;
+          openRecorded = true; window.murexTrack?.(unlockId, 'gallery_open');
+        }));
+      };
+      document.addEventListener('visibilitychange', recordVisibleOpen);
+      photo.onload = () => { photo.style.display = 'block'; fallback.style.display = 'none'; recordVisibleOpen(); };
       photo.onerror = () => { photo.style.display = 'none'; fallback.textContent = 'This photo could not be loaded. Try the next one.'; fallback.style.display = 'grid'; };
       const showPhoto = index => {
         photoIndex = (index + photos.length) % photos.length;
@@ -116,13 +129,16 @@
       };
       const reveal = () => {
         open = true; reset(); previousFocus = document.activeElement;
+        unlockId = window.crypto?.randomUUID?.() || null;
+        openRecorded = false; revealReadyAt = performance.now() + (reduce ? 120 : 750);
+        window.murexTrack?.(unlockId, 'key_success');
         egg.setAttribute('aria-hidden', 'false'); veil.setAttribute('aria-hidden', 'false');
         document.querySelector('.hero').inert = true;
         showPhoto(0); veil.classList.add('open'); egg.classList.add('open'); dismiss.focus({preventScroll:true}); special();
       };
       const close = () => {
         if (!open) return;
-        open = false; swipeStart = null;
+        open = false; swipeStart = null; unlockId = null;
         document.querySelector('.hero').inert = false;
         previousFocus?.focus?.({preventScroll:true});
         egg.classList.remove('open'); veil.classList.remove('open');

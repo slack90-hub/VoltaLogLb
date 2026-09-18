@@ -31,6 +31,9 @@ for (const directory of publicDirectories) {
 // Publish only the Murex gallery and its photos.
 await mkdir(path.join(outputDirectory, "murex"), { recursive: true });
 await cp(path.join(repositoryRoot, "murex", "index.html"), path.join(outputDirectory, "murex", "index.html"));
+for (const file of ["tracking-config.js", "tracking.js"]) {
+  await cp(path.join(repositoryRoot, "murex", file), path.join(outputDirectory, "murex", file));
+}
 await cp(path.join(repositoryRoot, "murex", "photos"), path.join(outputDirectory, "murex", "photos"), { recursive: true });
 
 console.log(`Prepared public Cloudflare Pages output in ${path.relative(repositoryRoot, outputDirectory)}.`);

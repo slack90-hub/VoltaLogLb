@@ -1,7 +1,16 @@
 # Keep ordinary local-only files out of the public website repository.
 /murex/*
 !/murex/index.html
+!/murex/tracking.js
+!/murex/tracking-config.js
 !/murex/photos/
 /functions/
 /_site/
 /assets/nad-maria.jpeg
+
+/tracking/wrangler.jsonc
+/tracking/.dev.vars*
+/tracking/.env*
+/tracking/.wrangler/
+/tracking/node_modules/
+/tracking/dashboard-access.txt
