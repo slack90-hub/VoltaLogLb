@@ -14,3 +14,12 @@
 /tracking/.wrangler/
 /tracking/node_modules/
 /tracking/dashboard-access.txt
+
+/private-chat/node_modules/
+/private-chat/.wrangler/
+/private-chat/dist/
+/private-chat/.dev.vars*
+/private-chat/.secrets/
+/private-chat/test-artifacts/
+/private-chat/public/*.txt
+/private-chat/worker-configuration.d.ts

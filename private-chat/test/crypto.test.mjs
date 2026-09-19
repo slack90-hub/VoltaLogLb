@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {randomBytes, createHash} from 'node:crypto';
+import {encrypt, decrypt, unlock, encode} from '../public/crypto.mjs';
+import {QUIET_MS, shouldNotify, validEnvelope} from '../src/rules.mjs';
+test('only Maria opening a quiet conversation triggers email, including exact 24 hours', () => {
+  assert.equal(shouldNotify('maria',null,1),true);
+  assert.equal(shouldNotify('nad',null,1),false);
+  assert.equal(shouldNotify('maria',100,100+QUIET_MS-1),false);
+  assert.equal(shouldNotify('maria',100,100+QUIET_MS),true);
+  assert.equal(shouldNotify('maria',100,100+QUIET_MS*5),true);
+  assert.equal(shouldNotify('nad',100,100+QUIET_MS*5),false);
+  const nadInitiates = 100+QUIET_MS*5;
+  assert.equal(shouldNotify('maria',nadInitiates,nadInitiates+60000),false);
+});
+test('two browsers recover history, with tamper and wrong-key protection', async () => {
+  const raw=randomBytes(32); const fingerprint=createHash('sha256').update(raw).digest('base64url');
+  const code=`room1.${encode(raw)}`;
+  const nad=await unlock(code,fingerprint), maria=await unlock(code,fingerprint);
+  const envelope=await encrypt(nad,'nad','مرحبا ماريا ♥\nEmergency message');
+  assert.ok(validEnvelope(envelope));
+  assert.equal(await decrypt(maria,{...envelope,sender:'nad'}),'مرحبا ماريا ♥\nEmergency message');
+  assert.equal(JSON.stringify(envelope).includes('Emergency'),false);
+  await assert.rejects(decrypt(maria,{...envelope,sender:'maria'}));
+  await assert.rejects(decrypt(maria,{...envelope,sender:'nad',id:crypto.randomUUID()}));
+  const damaged={...envelope,sender:'nad',ciphertext:(envelope.ciphertext[0]==='A'?'B':'A')+envelope.ciphertext.slice(1)};
+  await assert.rejects(decrypt(maria,damaged));
+  await assert.rejects(unlock(encode(randomBytes(32)),fingerprint));
+  const other=await encrypt(nad,'nad','مرحبا ماريا ♥\nEmergency message');
+  assert.notEqual(other.iv,envelope.iv);
+});

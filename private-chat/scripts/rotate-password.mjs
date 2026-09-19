@@ -1,0 +1,14 @@
+import {refreshAccessFiles} from './access-files.mjs';
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash,randomBytes} from 'node:crypto';
+const user=process.argv[2];if(!['nad','maria'].includes(user))throw new Error('Choose nad or maria.');
+const configPath=new URL('../.secrets/auth-config.json',import.meta.url),kitPath=new URL('../.secrets/access-kit.md',import.meta.url);
+const config=JSON.parse(await readFile(configPath,'utf8'));const kit=await readFile(kitPath,'utf8');
+const password=randomBytes(32).toString('base64url'),salt=randomBytes(16).toString('base64url');
+config[user]={salt,hash:createHash('sha256').update(`${salt}:${password}`).digest('base64url')};
+const label=user==='nad'?'Nad':'Maria';const updated=kit.replace(new RegExp(`(${label} account: ${user}\\nPassword: )[^\\n]+`),(_,prefix)=>prefix+password);
+if(updated===kit)throw new Error('Could not locate the account in the local kit. No files changed.');
+await writeFile(configPath,JSON.stringify(config));await writeFile(kitPath,updated);
+await writeFile(new URL('../.dev.vars',import.meta.url),`AUTH_CONFIG='${JSON.stringify(config)}'\n`);
+await refreshAccessFiles();
+console.log('Updated local account password; encryption key unchanged. Upload AUTH_CONFIG to revoke old sessions. No credentials printed.');
