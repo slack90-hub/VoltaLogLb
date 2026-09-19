@@ -4,7 +4,7 @@ A two-account text chat served by its own Cloudflare Worker. The public website 
 
 ## Access
 
-Open the deployed room or click/tap the copyright line at the bottom of the MDS homepage five times (less than 2.5 seconds between taps). Alt+Shift+M also opens it. The entrance works on the English and Arabic homepages.
+Open the deployed room or click/tap “Murex is a sea shell” in the About MDS section of the English homepage five times (less than 2.5 seconds between taps). Alt+Shift+M also opens it. The five-tap entrance is on the English homepage; the keyboard shortcut works on both homepages.
 
 Sign in as Nad or Maria with the generated account password, then enter the shared conversation recovery key. Each browser needs both. Credentials are in the **ignored local** `.secrets/access-kit.md`; give Maria only her own password plus the recovery key through a trusted channel. Keep a secure offline copy. This folder may be synchronized by the user's OneDrive; it is not an offline backup by itself.
 
