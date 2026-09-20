@@ -14,7 +14,7 @@ try{
   const desktop=await browser.newContext({viewport:{width:1365,height:900}}), mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   const nad=await desktop.newPage(),maria=await mobile.newPage();const errors=[];
   for(const page of [nad,maria])page.on('pageerror',error=>errors.push(error.message));
-  const login=async(page,user)=>{await page.goto(base);await page.locator('#user').selectOption(user);await page.locator('#password').fill(passwords[user]);await page.locator('#login-form button').click();await page.locator('#recovery').fill(code);await page.locator('#unlock-form .primary').click();await page.locator('#room').waitFor({state:'visible'});};
+  const login=async(page,user)=>{await page.goto(base);await page.locator('#user').selectOption(user);await page.locator('#password').fill(passwords[user]);await page.locator('#login-submit').click();await page.locator('#recovery').fill(code);await page.locator('#unlock-form .primary').click();await page.locator('#room').waitFor({state:'visible'});await page.locator('#passphrase-dialog').waitFor({state:'visible'});await page.locator('#setup-skip').click();};
   await nad.goto(base);await mkdir('test-artifacts',{recursive:true});await nad.screenshot({path:'test-artifacts/login-desktop.png'});
   await login(nad,'nad');await login(maria,'maria');
   await nad.locator('#draft').fill('Hello Maria — from the desktop ♥');await nad.locator('#send').click();await maria.getByText('Hello Maria — from the desktop ♥',{exact:true}).waitFor();

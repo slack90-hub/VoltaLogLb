@@ -8,7 +8,7 @@ export async function unlock(code, expectedFingerprint) {
   if (raw.length !== 32) throw new Error('The recovery key is not valid.');
   const fingerprint = encode(await crypto.subtle.digest('SHA-256', raw));
   if (fingerprint !== expectedFingerprint) throw new Error('This recovery key belongs to a different conversation.');
-  return crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt', 'decrypt']);
+  return crypto.subtle.importKey('raw', raw, 'AES-GCM', true, ['encrypt', 'decrypt']);
 }
 function aad(sender, id) { return encoder.encode(`mds-private-room:v1:${sender}:${id}`); }
 export async function encrypt(key, sender, text, id = crypto.randomUUID()) {

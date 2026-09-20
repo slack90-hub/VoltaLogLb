@@ -5,6 +5,8 @@ import html from '../public/index.html';
 import css from '../public/style.css';
 import app from '../public/app.txt';
 import cryptography from '../public/crypto.txt';
+import passphraseClient from '../public/passphrase.txt';
+import {credential, publicCredential, proofHash, equalProof, stagePassphrase, confirmPassphrase} from './passphrases.mjs';
 import { shouldNotify, validEnvelope } from './rules.mjs';
 const TTL = 8 * 60 * 60 * 1000;
 const COOKIE = '__Host-room';
@@ -48,7 +50,7 @@ export default {
         return await env.ROOM.getByName('nad-maria-v1').fetch(request);
       }
       if (request.method !== 'GET' && request.method !== 'HEAD') return json({error: 'Method not allowed.'}, 405);
-      const assets = {'/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.mjs': [app, 'text/javascript'], '/crypto.mjs': [cryptography, 'text/javascript'], '/robots.txt': ['User-agent: *\nDisallow: /\n', 'text/plain']};
+      const assets = {'/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.mjs': [app, 'text/javascript'], '/crypto.mjs': [cryptography, 'text/javascript'], '/passphrase.mjs': [passphraseClient, 'text/javascript'], '/robots.txt': ['User-agent: *\nDisallow: /\n', 'text/plain']};
       const asset = assets[url.pathname];
       if (!asset) return new Response('Not found', {status: 404, headers});
       return new Response(request.method === 'HEAD' ? null : asset[0], {headers: {...headers, 'content-type': `${asset[1]}; charset=utf-8`}});
@@ -66,7 +68,9 @@ export class PrivateRoom extends DurableObject {
       CREATE TABLE IF NOT EXISTS attempts (key TEXT PRIMARY KEY, count INTEGER NOT NULL, until INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS messages (seq INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT UNIQUE NOT NULL, sender TEXT NOT NULL, iv TEXT NOT NULL, ciphertext TEXT NOT NULL, created INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS receipts (user TEXT PRIMARY KEY, delivered INTEGER NOT NULL DEFAULT 0, seen INTEGER NOT NULL DEFAULT 0);
-      CREATE TABLE IF NOT EXISTS outbox (id TEXT PRIMARY KEY, created INTEGER NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, next_try INTEGER NOT NULL, state TEXT NOT NULL DEFAULT 'pending');`);
+      CREATE TABLE IF NOT EXISTS outbox (id TEXT PRIMARY KEY, created INTEGER NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, next_try INTEGER NOT NULL, state TEXT NOT NULL DEFAULT 'pending');
+      CREATE TABLE IF NOT EXISTS passphrases (user TEXT PRIMARY KEY, id TEXT NOT NULL, salt TEXT NOT NULL, iterations INTEGER NOT NULL, iv TEXT NOT NULL, wrapped_key TEXT NOT NULL, verifier TEXT NOT NULL, created INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS passphrase_pending (user TEXT PRIMARY KEY, id TEXT NOT NULL, salt TEXT NOT NULL, iterations INTEGER NOT NULL, iv TEXT NOT NULL, wrapped_key TEXT NOT NULL, verifier TEXT NOT NULL, created INTEGER NOT NULL, session_token TEXT NOT NULL, base_id TEXT NOT NULL);`);
   }
   rows(query, ...args) { return this.sql.exec(query, ...args).toArray(); }
   config() {
@@ -95,20 +99,39 @@ export class PrivateRoom extends DurableObject {
   }
   async route(request) {
     const url = new URL(request.url); const path = url.pathname; const config = this.config();
+    if (path === '/api/signin-info' && request.method === 'GET') {
+      this.limit(`info:${await hash(request.headers.get('cf-connecting-ip') || 'local')}`, 120, 15 * 60000);
+      const user=url.searchParams.get('user');
+      if(!['nad','maria'].includes(user)) throw new HttpError(400,'Choose your account.');
+      const record=credential(this,user);
+      return json(record?{enrolled:true,id:record.id,salt:record.salt,iterations:record.iterations}:{enrolled:false});
+    }
     if (path === '/api/login' && request.method === 'POST') {
-      this.limit(`login:${await hash(request.headers.get('cf-connecting-ip') || 'local')}`, 12, 15 * 60 * 1000);
+      this.limit(`login:${await hash(request.headers.get('cf-connecting-ip') || 'local')}`, 12, 15 * 60000);
       const data = await body(request); const user = data.user;
-      if (!['nad', 'maria'].includes(user) || typeof data.password !== 'string' || data.password.length > 200) throw new HttpError(401, 'Account or password is incorrect.');
-      const record = config[user];
-      // Passwords are generated random 256-bit tokens, never human-chosen passwords.
-      if (!eq(await hash(`${record.salt}:${data.password}`), record.hash)) throw new HttpError(401, 'Account or password is incorrect.');
-      const token = b64(crypto.getRandomValues(new Uint8Array(32))); const version = await hash(this.env.AUTH_CONFIG);
-      this.sql.exec('DELETE FROM sessions WHERE expires < ?', Date.now());
-      this.sql.exec('INSERT INTO sessions VALUES (?,?,?,?)', await hash(token), user, Date.now() + TTL, version);
-      return json({user, fingerprint: config.fingerprint}, 200, {'set-cookie': cookie(token)});
+      if (!['nad', 'maria'].includes(user)) throw new HttpError(401, 'Account or password is incorrect.');
+      let passphraseRecord;
+      if(data.mode==='passphrase') {
+        if(!/^[A-Za-z0-9_-]{43}$/.test(data.authProof)) throw new HttpError(401,'Passphrase is incorrect.');
+        passphraseRecord=credential(this,user);
+        const verifier=await proofHash(data.authProof);
+        if(!passphraseRecord||passphraseRecord.id!==data.id||!equalProof(verifier,passphraseRecord.verifier)) throw new HttpError(401,'Passphrase is incorrect.');
+      } else {
+        if(typeof data.password!=='string'||data.password.length>200) throw new HttpError(401,'Account or password is incorrect.');
+        const record=config[user];
+        if(!eq(await hash(`${record.salt}:${data.password}`),record.hash)) throw new HttpError(401,'Account or password is incorrect.');
+      }
+      const token=b64(crypto.getRandomValues(new Uint8Array(32)));const version=await hash(this.env.AUTH_CONFIG);const tokenHash=await hash(token);
+      // Do not mint an old-credential session if setup completed during hashing.
+      if(passphraseRecord&&credential(this,user)?.id!==passphraseRecord.id) throw new HttpError(401,'Passphrase changed. Please try again.');
+      this.sql.exec('DELETE FROM sessions WHERE expires < ?',Date.now());
+      this.sql.exec('INSERT INTO sessions VALUES (?,?,?,?)',tokenHash,user,Date.now()+TTL,version);
+      return json({user,fingerprint:config.fingerprint,passphraseReady:!!credential(this,user),envelope:passphraseRecord?publicCredential(passphraseRecord):undefined},200,{'set-cookie':cookie(token)});
     }
     const session = await this.session(request);
-    if (path === '/api/me' && request.method === 'GET') return json({user: session.user, fingerprint: config.fingerprint, emailReady: this.env.EMAIL_ENABLED === 'true' || !!(this.env.RESEND_API_KEY && this.env.ALERT_FROM && this.env.ALERT_TO), failedAlerts: this.rows("SELECT count(*) AS n FROM outbox WHERE state = 'failed'")[0].n, alerts: session.user === 'nad' ? this.rows('SELECT state,count(*) AS count FROM outbox GROUP BY state') : undefined});
+    if (path === '/api/passphrase/stage' && request.method === 'POST') return json({envelope:await stagePassphrase(this,session,await body(request))});
+    if (path === '/api/passphrase/confirm' && request.method === 'POST') return json({envelope:await confirmPassphrase(this,session,await body(request)),passphraseReady:true});
+    if (path === '/api/me' && request.method === 'GET') return json({user: session.user, fingerprint: config.fingerprint, passphraseReady: !!credential(this,session.user), emailReady: this.env.EMAIL_ENABLED === 'true' || !!(this.env.RESEND_API_KEY && this.env.ALERT_FROM && this.env.ALERT_TO), failedAlerts: this.rows("SELECT count(*) AS n FROM outbox WHERE state = 'failed'")[0].n, alerts: session.user === 'nad' ? this.rows('SELECT state,count(*) AS count FROM outbox GROUP BY state') : undefined});
     if (path === '/api/logout' && request.method === 'POST') {
       this.sql.exec('DELETE FROM sessions WHERE token = ?', session.token);
       for (const socket of this.ctx.getWebSockets()) if (socket.deserializeAttachment()?.token === session.token) socket.close(1000, 'Locked');

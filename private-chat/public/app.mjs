@@ -1,4 +1,5 @@
-import {unlock, encrypt, decrypt} from './crypto.mjs';
+import {unlock, encrypt, decrypt, encode} from './crypto.mjs';
+import {derivePassphrase,wrapHistoryKey,unwrapHistoryKey,validatePassphrase,ITERATIONS} from './passphrase.mjs';
 const $ = id => document.getElementById(id);
 let me, key, socket, reconnectTimer, typingTimer, busy = false, syncing = false, again = false, generation = 0;
 let syncedThrough = 0; let latest = 0, earliest = Infinity, allLoaded = false, lastSeen = 0, lastDelivered = 0, lastTyping = 0;
@@ -15,27 +16,83 @@ async function api(path, data) {
   if (!response.ok) { const failure = new Error(value.error || 'Please try again.'); failure.status = response.status; throw failure; }
   return value;
 }
+let originalKitMode=false;
+let formRevision=0;
 function showUnlock() { $('login-form').hidden = true; $('unlock-form').hidden = false; $('recovery').focus(); }
-$('login-form').addEventListener('submit', async event => {
-  event.preventDefault(); error(''); const button = event.submitter; button.disabled = true;
-  try { me = await api('login', {user:$('user').value, password:$('password').value}); $('password').value = ''; showUnlock(); }
-  catch (failure) { error(failure.message); } finally { button.disabled = false; }
-});
-$('unlock-form').addEventListener('submit', async event => {
-  event.preventDefault(); error(''); const button = event.submitter; button.disabled = true;
+async function refreshLoginLabel() {
+  const revision=++formRevision;
   try {
-    me = await api('me'); key = await unlock($('recovery').value, me.fingerprint); $('recovery').value = '';
-    generation++; $('gate').hidden = true; $('room').hidden = false; $('identity').textContent = `Signed in as ${title(me.user)}`;
-    lastActivity = Date.now(); hiddenAt = 0;
-    notice(!me.emailReady ? 'Email alerts are awaiting activation. Messages still work.' : me.failedAlerts ? 'An earlier email alert could not be sent. Please check directly for messages.' : '');
-    // Only ciphertext is retained for uncertain sends during this tab session.
-    try { for (const item of JSON.parse(sessionStorage.getItem(`room-pending-${me.user}`) || '[]')) pending.set(item.id, item); } catch { /* unavailable storage */ }
-    await sync(true); connect(); await flush(); $('draft').focus();
-  } catch (failure) { if (key) notice(failure.message); else error(failure.message); }
-  finally { button.disabled = false; }
+    const info=await api(`signin-info?user=${$('user').value}`);
+    if(revision!==formRevision)return;
+    $('password-label').textContent=info.enrolled&&!originalKitMode?'Your passphrase':'Original account password';
+    $('login-help').textContent=info.enrolled&&!originalKitMode?'One passphrase opens your conversation and history.':'First time? Use your existing access kit once to set up a passphrase.';
+    $('use-kit').textContent=originalKitMode?'Back to passphrase sign-in':'Use original access kit';
+    $('use-kit').hidden=!info.enrolled;
+  } catch { $('login-help').textContent='Enter your passphrase or original account password.'; }
+}
+$('user').onchange=()=>{originalKitMode=false;error('');$('password').value='';void refreshLoginLabel();};
+$('use-kit').onclick=()=>{originalKitMode=!originalKitMode;error('');$('password').value='';void refreshLoginLabel();};
+async function enterRoom() {
+  const epoch=generation;
+  const info=await api('me');if(epoch!==generation||!key)return;me=info;
+  generation++;$('gate').hidden=true;$('room').hidden=false;$('identity').textContent=`Signed in as ${title(me.user)}`;
+  lastActivity=Date.now();hiddenAt=0;
+  notice(!me.emailReady?'Email alerts are awaiting activation. Messages still work.':me.failedAlerts?'An earlier email alert could not be sent. Please check directly for messages.':'');
+  try{for(const item of JSON.parse(sessionStorage.getItem(`room-pending-${me.user}`)||'[]'))pending.set(item.id,item);}catch{}
+  await sync(true);if(!key)return;connect();await flush();$('draft').focus();
+  if(!me.passphraseReady)openPassphraseSetup();
+}
+$('login-form').addEventListener('submit',async event=>{
+  event.preventDefault();error('');const button=$('login-submit');button.disabled=true;const epoch=generation;const user=$('user').value;const value=$('password').value;
+  try {
+    const info=await api(`signin-info?user=${user}`);if(epoch!==generation)return;
+    if(info.enrolled&&!originalKitMode){
+      const derived=await derivePassphrase(value,user,info.salt,info.iterations);if(epoch!==generation)return;
+      const result=await api('login',{user,mode:'passphrase',id:info.id,authProof:derived.authProof});if(epoch!==generation)return;
+      const unlocked=await unwrapHistoryKey(result.envelope,derived.wrappingKey,user,result.fingerprint);if(epoch!==generation)return;
+      me=result;key=unlocked;$('password').value='';await enterRoom();
+    } else {
+      const result=await api('login',{user,password:value});if(epoch!==generation)return;
+      me=result;$('password').value='';showUnlock();
+    }
+  } catch(failure){error(failure.message||'Unable to unlock history. Use your original access kit to recover access.');}
+  finally{button.disabled=false;}
+});
+$('unlock-form').addEventListener('submit',async event=>{
+  event.preventDefault();error('');const button=event.submitter;button.disabled=true;const epoch=generation;
+  try{const info=await api('me');const unlocked=await unlock($('recovery').value,info.fingerprint);if(epoch!==generation)return;me=info;key=unlocked;$('recovery').value='';await enterRoom();}
+  catch(failure){if(key)notice(failure.message);else error(failure.message);}
+  finally{button.disabled=false;}
+});
+function openPassphraseSetup(){
+  if(!key)return;$('new-passphrase').value='';$('confirm-passphrase').value='';$('setup-error').textContent='';$('setup-form').hidden=false;$('setup-success').hidden=true;
+  $('setup-title').textContent=me.passphraseReady?'Change your passphrase':'Make sign-in easier';
+  $('passphrase-dialog').showModal();$('new-passphrase').focus();
+}
+$('setup-open').onclick=openPassphraseSetup;
+$('setup-skip').onclick=()=>$('passphrase-dialog').close();
+$('setup-done').onclick=()=>$('passphrase-dialog').close();
+$('passphrase-dialog').addEventListener('close',()=>{$('new-passphrase').value='';$('confirm-passphrase').value='';});
+$('setup-form').addEventListener('submit',async event=>{
+  event.preventDefault();$('setup-error').textContent='';const button=$('setup-save');const epoch=generation;
+  button.disabled=true;$('setup-skip').disabled=true;button.textContent='Securing your passphrase…';
+  try{
+    const value=validatePassphrase($('new-passphrase').value);
+    if(value!==$('confirm-passphrase').value.normalize('NFC'))throw new Error('The two passphrases do not match.');
+    const salt=encode(crypto.getRandomValues(new Uint8Array(32)));const user=me.user;const fingerprint=me.fingerprint;
+    const derived=await derivePassphrase(value,user,salt);if(epoch!==generation||!key)return;
+    const wrapped=await wrapHistoryKey(key,derived.wrappingKey,user,fingerprint,salt);if(epoch!==generation||!key)return;
+    const staged=await api('passphrase/stage',{salt,iterations:ITERATIONS,authProof:derived.authProof,...wrapped});if(epoch!==generation||!key)return;
+    // Verify the server-returned envelope against the original fingerprint before
+    // activating. Existing messages and the original room key never change.
+    await unwrapHistoryKey(staged.envelope,derived.wrappingKey,user,fingerprint);if(epoch!==generation||!key)return;
+    await api('passphrase/confirm',{id:staged.envelope.id,authProof:derived.authProof});if(epoch!==generation||!key)return;
+    me.passphraseReady=true;$('new-passphrase').value='';$('confirm-passphrase').value='';$('setup-form').hidden=true;$('setup-success').hidden=false;$('setup-title').textContent='You are all set.';
+  }catch(failure){if(epoch===generation)$('setup-error').textContent=failure.message||'Could not finish setup. Your original access kit still works.';}
+  finally{button.disabled=false;$('setup-skip').disabled=false;button.textContent='Save passphrase';}
 });
 function clearLocal() {
-  generation++; key = null; messages.clear(); pending.clear(); receipts = [];
+  generation++; formRevision++; $('passphrase-dialog').close(); $('new-passphrase').value=''; $('confirm-passphrase').value=''; key = null; messages.clear(); pending.clear(); receipts = [];
   latest = 0; syncedThrough = 0; earliest = Infinity; allLoaded = false; lastSeen = 0; lastDelivered = 0; syncing = false; busy = false; again = false;
   if (me) { try { sessionStorage.removeItem(`room-pending-${me.user}`); } catch { /* storage unavailable */ } }
   clearTimeout(reconnectTimer); clearTimeout(typingTimer); if (socket) { socket.onclose = null; socket.close(); socket = null; }
@@ -47,7 +104,7 @@ async function lock(exit = false) {
   clearLocal(); error('');
   const closing = api('logout', {}).catch(() => {});
   if (exit) { navigator.sendBeacon('/api/logout', '{}'); location.replace('https://mdslb.com/'); }
-  else { await closing; me = null; $('password').focus(); }
+  else { await closing; me = null; originalKitMode=false; void refreshLoginLabel(); $('password').focus(); }
 }
 $('lock').onclick = () => lock(); $('exit').onclick = () => lock(true); $('switch-account').onclick = () => lock();
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && key) void lock(true); });
@@ -207,4 +264,5 @@ setInterval(() => {
   if (socket?.readyState === WebSocket.OPEN) socket.send('ping');
   void sync(); void flush();
 }, 10000);
-api('me').then(value => { me = value; $('user').value = value.user; showUnlock(); }).catch(() => {});
+// A fresh page always asks for the passphrase; a cookie alone cannot unlock history.
+void refreshLoginLabel();

@@ -9,7 +9,7 @@
     "check": "npm run build && wrangler deploy --dry-run",
     "provision": "node scripts/provision.mjs",
     "predev": "node scripts/build.mjs",
-    "test:browser": "node scripts/build.mjs && node test/browser.mjs"
+    "test:browser": "node scripts/build.mjs && node test/browser.mjs && node test/passphrase-browser.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",
