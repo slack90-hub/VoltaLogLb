@@ -7,7 +7,7 @@ let lastActivity = Date.now(), hiddenAt = 0;
 const messages = new Map(), pending = new Map();
 let receipts = [], searchText = '';
 const neutralAppearance=()=>document.documentElement.dataset.appearance==='neutral';
-const title = user => user === 'nad' ? (neutralAppearance()?'Nad':'Nad 🦁') : (neutralAppearance()?'Maria':'Maria 🦋');
+const title = user => user === 'nad' ? (neutralAppearance()?'User A':'🦁') : (neutralAppearance()?'User B':'🦋');
 window.addEventListener('room-appearance-change',()=>{if(me)$('identity').textContent=`Signed in as ${title(me.user)}`;$('typing').textContent='';if(key)render();});
 const error = message => { $('gate-error').textContent = message; };
 function notice(message) { $('notice').textContent = message; $('notice').hidden = !message; }

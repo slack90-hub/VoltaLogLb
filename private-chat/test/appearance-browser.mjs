@@ -10,10 +10,12 @@ try{
     await page.screenshot({path:`test-artifacts/personal-${mobile?'mobile':'desktop'}.png`});assert.equal(await page.getByRole('switch').isChecked(),false);assert.equal(await page.locator('.chat-title h1').innerText(),'Lion & Butterfly');
     await page.locator('.mode-toggle').click();assert.equal(await page.getByRole('switch').isChecked(),true);assert.equal(await page.locator('.chat-title h1').innerText(),'Conversation');
     const chrome=await page.evaluate(()=>{const room=document.querySelector('#room').cloneNode(true);room.querySelector('#messages').remove();room.querySelector('#draft').remove();const copy=document.createElement('div');copy.append(room);document.body.append(copy);room.hidden=false;const text=room.innerText;copy.remove();return text;});
-    assert.equal(/[♥♡🦁🦋]|love|lion|butterfly|hearts|always us/i.test(chrome),false,chrome);
+    assert.equal(/[♥♡🦁🦋]|love|lion|butterfly|hearts|always us|\bNad\b|\bMaria\b/i.test(chrome),false,chrome);
+    assert.equal(await page.locator('#identity').textContent(),'Signed in as User A');
+    assert.ok((await page.locator('.bubble .meta').first().innerText()).includes('User A')); 
     assert.equal(await page.locator('#emoji').getAttribute('aria-label'),'Add a smile');await page.screenshot({path:`test-artifacts/neutral-${mobile?'mobile':'desktop'}.png`});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.equal(await page.locator('#messages').innerText().then(text=>text.includes('A message stays unchanged.')),true);
-    await page.locator('#lock').click();assert.equal(await page.locator('.welcome h1').innerText(),'Your private\nconversation.');assert.equal(await page.locator('#user option[value=nad]').textContent(),'Nad');
+    await page.locator('#lock').click();assert.equal(await page.locator('.welcome h1').innerText(),'Your private\nconversation.');assert.equal(await page.locator('#user option[value=nad]').textContent(),'User A');
     await page.reload();assert.equal(await page.evaluate(()=>document.documentElement.dataset.appearance),'neutral');await login();assert.equal(await page.getByRole('switch').isChecked(),true);
     await page.locator('.mode-toggle').click();assert.equal(await page.locator('.chat-title h1').innerText(),'Lion & Butterfly');assert.equal(await page.locator('#emoji').getAttribute('aria-label'),'Add a heart');assert.deepEqual(errors,[]);await context.close();
   }
