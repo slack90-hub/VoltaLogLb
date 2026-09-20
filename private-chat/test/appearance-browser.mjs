@@ -12,7 +12,7 @@ try{
     const chrome=await page.evaluate(()=>{const room=document.querySelector('#room').cloneNode(true);room.querySelector('#messages').remove();room.querySelector('#draft').remove();const copy=document.createElement('div');copy.append(room);document.body.append(copy);room.hidden=false;const text=room.innerText;copy.remove();return text;});
     assert.equal(/[♥♡🦁🦋]|love|lion|butterfly|hearts|always us|\bNad\b|\bMaria\b/i.test(chrome),false,chrome);
     assert.equal(await page.locator('#identity').textContent(),'Signed in as User A');
-    assert.ok((await page.locator('.bubble .meta').first().innerText()).includes('User A')); 
+    assert.ok((await page.locator('.bubble .meta').first().innerText()).includes('User A'));
     assert.equal(await page.locator('#emoji').getAttribute('aria-label'),'Add a smile');await page.screenshot({path:`test-artifacts/neutral-${mobile?'mobile':'desktop'}.png`});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.equal(await page.locator('#messages').innerText().then(text=>text.includes('A message stays unchanged.')),true);
     await page.locator('#lock').click();assert.equal(await page.locator('.welcome h1').innerText(),'Your private\nconversation.');assert.equal(await page.locator('#user option[value=nad]').textContent(),'User A');
