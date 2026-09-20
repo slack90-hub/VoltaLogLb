@@ -10,6 +10,12 @@ First-time setup: choose your account (lion for Nad, butterfly for Maria), sign 
 
 The plaintext key stays in tab memory and is never sent to the backend. Refreshing/locking requires the passphrase again after enrollment. Choose Use original access kit to recover with the original password plus recovery key; resetting a password alone cannot decrypt history. Lock revokes the session and removes decrypted content. Quick exit/Escape also returns to MDS. Auto-lock: 15 idle minutes, or 5 minutes in the background. Quick exit cannot erase browser history or screenshots. Locking discards unsent drafts and queued ciphertext; keep the tab open until messages show Sent.
 
+## Appearance switch
+
+The Neutral mode switch is above the conversation search field. On removes the interface's romantic copy, hearts, lion/butterfly symbols and personal decoration. Off uses the personal lion-and-butterfly theme. The preference is saved only in this browser (room-appearance in localStorage), applies to the login screen, and syncs across tabs of the same origin. It is not sent to the server or shared with the other person's browser. A blocking same-origin appearance script applies the saved mode before page content appears. Messages and drafts remain exactly as written; this is not a message-redaction feature.
+
+Run node test/appearance-browser.mjs to check both modes, desktop/mobile layout, locking, persistence, and neutral login.
+
 ## Email rule
 
 Only a message authenticated as Maria can trigger an alert. There must be at least 24 hours since the last accepted message from **either** account. The first-ever Maria message also triggers one. Opening the room, logging in, typing and reading do not count as messages. A Nad message restarts the activity clock, so Maria's immediate reply never alerts him.

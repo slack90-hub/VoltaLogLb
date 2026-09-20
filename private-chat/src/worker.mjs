@@ -6,6 +6,7 @@ import css from '../public/style.css';
 import app from '../public/app.txt';
 import cryptography from '../public/crypto.txt';
 import passphraseClient from '../public/passphrase.txt';
+import appearanceClient from '../public/appearance.txt';
 import {credential, publicCredential, proofHash, equalProof, stagePassphrase, confirmPassphrase} from './passphrases.mjs';
 import { shouldNotify, validEnvelope } from './rules.mjs';
 const TTL = 8 * 60 * 60 * 1000;
@@ -50,7 +51,7 @@ export default {
         return await env.ROOM.getByName('nad-maria-v1').fetch(request);
       }
       if (request.method !== 'GET' && request.method !== 'HEAD') return json({error: 'Method not allowed.'}, 405);
-      const assets = {'/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.mjs': [app, 'text/javascript'], '/crypto.mjs': [cryptography, 'text/javascript'], '/passphrase.mjs': [passphraseClient, 'text/javascript'], '/robots.txt': ['User-agent: *\nDisallow: /\n', 'text/plain']};
+      const assets = {'/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.mjs': [app, 'text/javascript'], '/crypto.mjs': [cryptography, 'text/javascript'], '/passphrase.mjs': [passphraseClient, 'text/javascript'], '/appearance.js': [appearanceClient, 'text/javascript'], '/robots.txt': ['User-agent: *\nDisallow: /\n', 'text/plain']};
       const asset = assets[url.pathname];
       if (!asset) return new Response('Not found', {status: 404, headers});
       return new Response(request.method === 'HEAD' ? null : asset[0], {headers: {...headers, 'content-type': `${asset[1]}; charset=utf-8`}});

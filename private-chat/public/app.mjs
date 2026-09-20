@@ -6,7 +6,9 @@ let syncedThrough = 0; let latest = 0, earliest = Infinity, allLoaded = false, l
 let lastActivity = Date.now(), hiddenAt = 0;
 const messages = new Map(), pending = new Map();
 let receipts = [], searchText = '';
-const title = user => user === 'nad' ? 'Nad' : 'Maria';
+const neutralAppearance=()=>document.documentElement.dataset.appearance==='neutral';
+const title = user => user === 'nad' ? (neutralAppearance()?'Nad':'Nad 🦁') : (neutralAppearance()?'Maria':'Maria 🦋');
+window.addEventListener('room-appearance-change',()=>{if(me)$('identity').textContent=`Signed in as ${title(me.user)}`;$('typing').textContent='';if(key)render();});
 const error = message => { $('gate-error').textContent = message; };
 function notice(message) { $('notice').textContent = message; $('notice').hidden = !message; }
 function connected(message) { $('connection').textContent = message; }
@@ -224,7 +226,7 @@ $('draft').addEventListener('input', () => {
   $('draft').style.height = 'auto'; $('draft').style.height = `${Math.min(130, $('draft').scrollHeight)}px`;
   if (socket?.readyState === WebSocket.OPEN && Date.now() - lastTyping > 2500) { socket.send('typing'); lastTyping = Date.now(); }
 });
-$('emoji').onclick = () => { $('draft').value += ' ♥'; $('draft').focus(); };
+$('emoji').onclick = () => { $('draft').value += neutralAppearance()?' ☺':' ♥'; $('draft').focus(); };
 $('search').oninput = () => { searchText = $('search').value.trim().toLocaleLowerCase(); render(); };
 async function earlier() {
   if (!key || allLoaded) return;
