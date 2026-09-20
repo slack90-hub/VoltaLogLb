@@ -19,4 +19,4 @@ html[data-appearance="neutral"] .appearance-row{background:#f5f7f5;border-color:
 @media(prefers-reduced-motion:reduce){.toggle-track,.toggle-track:after{transition:none}}
 
 /* Quiet personal artwork; no image is displayed or requested in neutral mode. */
-html:not([data-appearance="neutral"]) .timeline::before{content:"";position:absolute;right:0;bottom:0;width:min(340px,72%);height:min(640px,100%);z-index:-1;pointer-events:none;background:url("https://mdslb.com/assets/room-artwork.png") right center/cover no-repeat;opacity:.14;mask-image:linear-gradient(to right,transparent,#000 45%),linear-gradient(to bottom,transparent,#000 28%);mask-composite:intersect}
+html:not([data-appearance="neutral"]) .timeline::before{content:"";position:absolute;right:0;bottom:0;width:auto;aspect-ratio:1 / 2;max-width:72%;height:min(640px,100%);z-index:-1;pointer-events:none;background:url("https://mdslb.com/assets/room-artwork.png") right center/contain no-repeat;opacity:.25;mask-image:linear-gradient(to right,transparent,#000 12%),linear-gradient(to bottom,transparent,#000 12%);mask-composite:intersect}
