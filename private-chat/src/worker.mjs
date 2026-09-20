@@ -17,7 +17,7 @@ const headers = {
   'x-robots-tag': 'noindex, nofollow, noarchive',
   'strict-transport-security': 'max-age=31536000',
   'permissions-policy': 'camera=(), microphone=(), geolocation=()',
-  'content-security-policy': "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+  'content-security-policy': "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data: https://mdslb.com; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
 };
 const json = (data, status = 200, extra = {}) => Response.json(data, {status, headers: {...headers, ...extra}});
 const enc = new TextEncoder();
