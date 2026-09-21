@@ -41,7 +41,7 @@ async function enterRoom() {
   lastActivity=Date.now();hiddenAt=0;
   notice(!me.emailReady?'Email alerts are awaiting activation. Messages still work.':me.failedAlerts?'An earlier email alert could not be sent. Please check directly for messages.':'');
   try{for(const item of JSON.parse(sessionStorage.getItem(`room-pending-${me.user}`)||'[]'))pending.set(item.id,item);}catch{}
-  await sync(true);if(!key)return;connect();await flush();$('draft').focus();
+  await sync(true);if(!key)return;connect();await flush();if(!matchMedia('(max-width:800px)').matches)$('draft').focus();
   if(!me.passphraseReady)openPassphraseSetup();
 }
 $('login-form').addEventListener('submit',async event=>{
@@ -109,7 +109,7 @@ async function lock(exit = false) {
   else { await closing; me = null; originalKitMode=false; void refreshLoginLabel(); $('password').focus(); }
 }
 $('lock').onclick = () => lock(); $('exit').onclick = () => lock(true); $('switch-account').onclick = () => lock();
-document.addEventListener('keydown', event => { if (event.key === 'Escape' && key) void lock(true); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && key && !document.querySelector('.chat.menu-open,.chat.search-open')) void lock(true); });
 window.addEventListener('pagehide', () => { clearLocal(); navigator.sendBeacon('/api/logout', '{}'); });
 window.addEventListener('pageshow', event => { if (event.persisted) { clearLocal(); location.reload(); } });
 async function merge(rows, epoch) {
@@ -268,3 +268,16 @@ setInterval(() => {
 }, 10000);
 // A fresh page always asks for the passphrase; a cookie alone cannot unlock history.
 void refreshLoginLabel();
+
+// Mobile chrome reuses the existing account and appearance controls.
+const chatPanel=document.querySelector('.chat');
+function closeMobileMenu(){chatPanel.classList.remove('menu-open');$('mobile-menu').setAttribute('aria-expanded','false');}
+$('mobile-menu').onclick=()=>{const open=chatPanel.classList.toggle('menu-open');$('mobile-menu').setAttribute('aria-expanded',String(open));};
+$('mobile-neutral').onclick=()=>{$('neutral-mode').click();};
+function syncMobileNeutral(){$('mobile-neutral').setAttribute('aria-pressed',String(neutralAppearance()));}
+syncMobileNeutral();window.addEventListener('room-appearance-change',syncMobileNeutral);
+function closeMobileSearch(){chatPanel.classList.remove('search-open');$('mobile-search').setAttribute('aria-expanded','false');$('search').value='';$('search').dispatchEvent(new Event('input'));}
+$('mobile-search').onclick=()=>{closeMobileMenu();if(chatPanel.classList.contains('search-open')){closeMobileSearch();}else{chatPanel.classList.add('search-open');$('mobile-search').setAttribute('aria-expanded','true');$('search').focus();}};
+document.addEventListener('click',event=>{if(!event.target.closest('#mobile-menu,.header-actions,.appearance-row'))closeMobileMenu();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeMobileMenu();closeMobileSearch();}});
+document.querySelector('.header-actions').addEventListener('click',()=>{closeMobileMenu();closeMobileSearch();});
