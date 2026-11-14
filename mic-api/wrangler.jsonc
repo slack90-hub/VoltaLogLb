@@ -1,0 +1,14 @@
+{
+  "name": "mic-survey",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-14",
+  "account_id": "f3073764cb377f9c39bcab97b9e7bab9",
+  "workers_dev": true,
+  "preview_urls": false,
+  "send_email": [{ "name": "EMAIL" }],
+  "ratelimits": [
+    { "name": "SUBMISSIONS_PER_IP", "namespace_id": "1014", "simple": { "limit": 3, "period": 60 } },
+    { "name": "SUBMISSIONS_TOTAL", "namespace_id": "1015", "simple": { "limit": 20, "period": 60 } }
+  ],
+  "observability": { "enabled": false }
+}

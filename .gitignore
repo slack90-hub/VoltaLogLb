@@ -23,3 +23,5 @@
 /private-chat/test-artifacts/
 /private-chat/public/*.txt
 /private-chat/worker-configuration.d.ts
+/mic-api/.wrangler/
+/mic-api/.dev.vars*
