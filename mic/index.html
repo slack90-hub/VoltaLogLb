@@ -10,7 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=4">
   <link rel="stylesheet" href="styles.css?v=5">
   <style>@media(min-width:761px){.services{grid-template-columns:repeat(2,minmax(0,1fr))}}.service:nth-child(4){background:#dce9ff}</style>
-</head>
+<style>.insurance-picker{border:1px solid #b8c4d9;border-radius:12px;background:var(--paper)}.insurance-picker summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;cursor:pointer;list-style:none;font-size:16px;line-height:1.5}.insurance-picker summary::-webkit-details-marker{display:none}.insurance-picker summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:12px}.insurance-picker[open] summary{border-bottom:1px solid var(--line)}.insurance-options{border:0;padding:8px;margin:0;min-width:0}.insurance-options label{display:flex;align-items:center;gap:12px;min-height:48px;padding:10px;border-radius:8px;margin:0;font-weight:500;cursor:pointer}.insurance-options label:hover{background:#eaf0ff}.insurance-options input{width:20px;height:20px;padding:0;margin:0;flex:0 0 20px;accent-color:var(--blue)}.insurance-hint{font-size:12px;color:var(--muted);margin:7px 0 0}.insurance-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}</style></head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
@@ -48,7 +48,8 @@
           <div class="survey-field"><label for="survey-name">Full name</label><input id="survey-name" name="name" autocomplete="name" maxlength="120" required placeholder="Your name"></div>
           <div class="survey-field"><label for="survey-phone">Phone number</label><input id="survey-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" required placeholder="e.g. +961 71 123 456"></div>
           <div class="survey-field survey-wide"><label for="survey-email">Email address</label><input id="survey-email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com"></div>
-          <div class="survey-field survey-wide"><label for="survey-interest">What are you interested in?</label><textarea id="survey-interest" name="interest" rows="4" maxlength="1000" required placeholder="Critical Illness, Personal Accident, Retirement, Life term… tell us how we can help."></textarea></div>
+          <div class="survey-field survey-wide"><label id="insurance-label">Interest in</label><details id="insurance-picker" class="insurance-picker"><summary aria-labelledby="insurance-label insurance-selection" aria-describedby="insurance-hint"><span id="insurance-selection">Select insurance types</span><span aria-hidden="true">⌄</span></summary><fieldset class="insurance-options"><legend class="insurance-sr">Select one or more insurance types</legend><label><input type="checkbox" name="insuranceTypes" value="Critical Illness"><span>Critical Illness</span></label><label><input type="checkbox" name="insuranceTypes" value="Personal Accident"><span>Personal Accident</span></label><label><input type="checkbox" name="insuranceTypes" value="Retirement"><span>Retirement</span></label><label><input type="checkbox" name="insuranceTypes" value="Life term"><span>Life term</span></label></fieldset></details><p id="insurance-hint" class="insurance-hint">Select one or more insurance types.</p></div>
+          <div class="survey-field survey-wide"><label for="survey-interest">Your message (optional)</label><textarea id="survey-interest" name="interest" rows="4" maxlength="800" placeholder="Tell us how we can help, or share any questions."></textarea></div>
         </div>
         <div class="survey-trap" aria-hidden="true"><label for="survey-website">Leave this field empty</label><input id="survey-website" name="website" tabindex="-1" autocomplete="off"></div>
         <p id="survey-privacy" class="survey-privacy">By submitting, you agree that Murex Insurance Consultancy may contact you about your enquiry.</p>
@@ -59,7 +60,7 @@
     </section>
   </main>
   <footer class="wrap"><div class="footer-top"><a class="brand footer-brand" href="#" aria-label="Back to top"><img src="assets/mark.svg?v=4" alt="" width="34" height="40"><span>MUREX<small>INSURANCE CONSULTANCY</small></span></a><p>Clear advice. Confident coverage.</p><a class="text-link" href="#">Back to top ↑</a></div><div class="footer-bottom"><span>© <span id="year">2026</span> Murex Insurance Consultancy.</span><p>Consultancy helps you understand your options. Coverage, acceptance and claims remain subject to the insurer’s policy terms, conditions and exclusions.</p></div></footer>
-  <script src="survey.js?v=1" defer></script>
+  <script src="survey.js?v=2" defer></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     (() => {
