@@ -1,4 +1,4 @@
-import { cp, mkdir, rm } from "node:fs/promises";
+import { cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,6 +13,26 @@ const publicFiles = [
 ];
 
 const publicDirectories = ["ar", "airborne", "assets", "cogniva", "fortex", "hardware", "mic", "nexus", "voltalog"];
+
+const analyticsSnippet = `<!-- Cloudflare Web Analytics -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "03087e5ae911463d8d4b906034052f7d"}'></script>
+<!-- End Cloudflare Web Analytics -->`;
+
+async function addWebAnalytics(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const asset = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      await addWebAnalytics(asset);
+    } else if (entry.isFile() && entry.name.endsWith(".html")) {
+      const html = await readFile(asset, "utf8");
+      const closingBody = /<\/body\s*>/i;
+      const updated = closingBody.test(html)
+        ? html.replace(closingBody, `${analyticsSnippet}\n$&`)
+        : `${html}\n${analyticsSnippet}\n`;
+      await writeFile(asset, updated, "utf8");
+    }
+  }
+}
 
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(outputDirectory, { recursive: true });
@@ -35,5 +55,7 @@ for (const file of ["tracking-config.js", "tracking.js"]) {
   await cp(path.join(repositoryRoot, "murex", file), path.join(outputDirectory, "murex", file));
 }
 await cp(path.join(repositoryRoot, "murex", "photos"), path.join(outputDirectory, "murex", "photos"), { recursive: true });
+
+await addWebAnalytics(outputDirectory);
 
 console.log(`Prepared public Cloudflare Pages output in ${path.relative(repositoryRoot, outputDirectory)}.`);
